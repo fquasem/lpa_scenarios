@@ -120,17 +120,32 @@
 
   /* ── Quiz tab ── */
   .quiz-header { margin-bottom: 1.5rem; }
-  .quiz-scenario-select { margin-bottom: 1.5rem; }
-  .quiz-scenario-select label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
-  .quiz-scenario-select select {
-    width: 100%; padding: 9px 12px; border-radius: var(--radius-md);
+  .quiz-filter-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
+  .quiz-archetype-select { margin-bottom: 1.5rem; }
+  .quiz-archetype-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .arch-btn {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 14px 16px; border-radius: var(--radius-lg);
     border: 0.5px solid var(--border); background: var(--bg);
-    font-size: 14px; font-family: var(--font); color: var(--text-primary); cursor: pointer;
-    appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a84' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center;
-    padding-right: 32px;
+    cursor: pointer; font-family: var(--font); text-align: left;
+    transition: border-color 0.15s, background 0.15s;
   }
-  .quiz-scenario-select select:focus { outline: none; border-color: #7F77DD; }
+  .arch-btn:hover { border-color: var(--border-hover); }
+  .arch-btn-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .arch-btn-count { font-size: 12px; color: var(--text-tertiary); }
+  .arch-btn-all:hover  { background: var(--bg-secondary); }
+  .arch-btn-vis { border-color: #CECBF6; }
+  .arch-btn-vis:hover  { background: #EEEDFE; border-color: #7F77DD; }
+  .arch-btn-vis .arch-btn-name { color: #3C3489; }
+  .arch-btn-cmd { border-color: #B5D4F4; }
+  .arch-btn-cmd:hover  { background: #E6F1FB; border-color: #378ADD; }
+  .arch-btn-cmd .arch-btn-name { color: #0C447C; }
+  .arch-btn-arc { border-color: #9FE1CB; }
+  .arch-btn-arc:hover  { background: #E1F5EE; border-color: #1D9E75; }
+  .arch-btn-arc .arch-btn-name { color: #085041; }
+  .arch-btn-pri { border-color: #FAC775; }
+  .arch-btn-pri:hover  { background: #FAEEDA; border-color: #BA7517; }
+  .arch-btn-pri .arch-btn-name { color: #633806; }
 
   .quiz-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .quiz-situation { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid var(--border); }
@@ -269,14 +284,33 @@
     <div class="quiz-header">
       <p class="eyebrow">Quiz</p>
       <h1>Test your judgment</h1>
-      <p class="subtitle">Choose a scenario, read the situation, and pick the best response. You'll get immediate feedback on each answer.</p>
+      <p class="subtitle">Choose a leader archetype, then work through a scenario from that group. You'll get immediate feedback on each answer.</p>
     </div>
 
-    <div class="quiz-scenario-select">
-      <label for="quiz-select">Choose a scenario</label>
-      <select id="quiz-select" onchange="loadQuiz(this.value)">
-        <option value="">— Select a scenario —</option>
-      </select>
+    <div class="quiz-archetype-select">
+      <p class="quiz-filter-label">Choose an archetype</p>
+      <div class="quiz-archetype-btns">
+        <button class="arch-btn arch-btn-all" onclick="loadQuizByArchetype('all')">
+          <span class="arch-btn-name">All archetypes</span>
+          <span class="arch-btn-count" id="arch-cnt-all"></span>
+        </button>
+        <button class="arch-btn arch-btn-vis" onclick="loadQuizByArchetype('Vision')">
+          <span class="arch-btn-name">Vision</span>
+          <span class="arch-btn-count" id="arch-cnt-vis"></span>
+        </button>
+        <button class="arch-btn arch-btn-cmd" onclick="loadQuizByArchetype('Command')">
+          <span class="arch-btn-name">Command</span>
+          <span class="arch-btn-count" id="arch-cnt-cmd"></span>
+        </button>
+        <button class="arch-btn arch-btn-arc" onclick="loadQuizByArchetype('Architect')">
+          <span class="arch-btn-name">Architect</span>
+          <span class="arch-btn-count" id="arch-cnt-arc"></span>
+        </button>
+        <button class="arch-btn arch-btn-pri" onclick="loadQuizByArchetype('Pride')">
+          <span class="arch-btn-name">Pride</span>
+          <span class="arch-btn-count" id="arch-cnt-pri"></span>
+        </button>
+      </div>
     </div>
 
     <div id="quiz-area" style="display:none">
@@ -310,7 +344,8 @@
             <div class="score-title" id="sc-title"></div>
             <div class="score-subtitle" id="sc-subtitle"></div>
             <div class="score-breakdown" id="sc-breakdown"></div>
-            <button class="retry-btn" onclick="retryQuiz()">Try again</button>
+            <button class="retry-btn" id="sc-retry-btn" onclick="retryQuiz()">Try another scenario</button>
+            <div id="sc-retry-label" style="font-size:12px;color:var(--text-tertiary);margin-top:8px;"></div>
           </div>
         </div>
       </div>
@@ -733,19 +768,20 @@ function nextStep() { if(libStep<libSteps.length-1){libStep++;renderLibStep();} 
 function prevStep() { if(libStep>0){libStep--;renderLibStep();} }
 
 /* ── Quiz ── */
-(function buildSelect(){
-  const sel = document.getElementById('quiz-select');
-  scenarios.forEach(s=>{
-    const o = document.createElement('option');
-    o.value = s.id;
-    o.textContent = cap(s.title);
-    sel.appendChild(o);
+(function buildArchCounts(){
+  const archetypes = ['Vision','Command','Architect','Pride'];
+  const idMap = {Vision:'arch-cnt-vis',Command:'arch-cnt-cmd',Architect:'arch-cnt-arc',Pride:'arch-cnt-pri'};
+  document.getElementById('arch-cnt-all').textContent = scenarios.length + ' scenarios';
+  archetypes.forEach(a=>{
+    const n = scenarios.filter(s=>s.archetypes.includes(a)).length;
+    document.getElementById(idMap[a]).textContent = n + ' scenario' + (n!==1?'s':'');
   });
 })();
 
-function loadQuiz(id) {
-  if(!id) { document.getElementById('quiz-area').style.display='none'; return; }
-  quizScenario = scenarios.find(s=>s.id==id);
+function loadQuizByArchetype(archetype) {
+  const pool = archetype==='all' ? scenarios : scenarios.filter(s=>s.archetypes.includes(archetype));
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  quizScenario = pick;
   quizQIdx = 0;
   quizAnswers = [];
   document.getElementById('quiz-area').style.display = 'block';
@@ -812,22 +848,30 @@ function showScore() {
   circle.textContent = `${pct}%`;
   circle.className = 'score-circle ' + (pct>=80?'great':pct>=50?'ok':'low');
   document.getElementById('sc-title').textContent = pct===100 ? 'Perfect read' : pct>=80 ? 'Strong judgment' : pct>=50 ? 'Getting there' : 'Keep practicing';
-  document.getElementById('sc-subtitle').textContent = `${correct} of ${total} correct for "${cap(quizScenario.title)}"`;
+  document.getElementById('sc-subtitle').textContent = `You answered the "${cap(quizScenario.title)}" scenario`;
   const q = quizScenario.quiz;
+  const archLabel = quizScenario.archetypes.join(' / ');
   document.getElementById('sc-breakdown').innerHTML = quizAnswers.map((a,i)=>`
     <div class="score-row">
       <div class="score-row-q">${q.question}</div>
       <div class="score-row-result ${a.correct?'c':'w'}">${a.correct?'Correct':'Incorrect'}</div>
     </div>`).join('');
+  document.getElementById('sc-retry-label').textContent = `Try another ${archLabel} scenario`;
   window.scrollTo(0,0);
 }
 
 function retryQuiz() {
+  const archetype = quizScenario.archetypes[0];
+  const pool = scenarios.filter(s=>s.archetypes.includes(archetype));
+  const others = pool.filter(s=>s.id!==quizScenario.id);
+  const next = others.length > 0 ? others[Math.floor(Math.random()*others.length)] : pool[0];
+  quizScenario = next;
   quizQIdx = 0;
   quizAnswers = [];
   document.getElementById('quiz-active').style.display = 'block';
   document.getElementById('quiz-score').style.display = 'none';
   renderQuestion();
+  window.scrollTo(0,0);
 }
 
 renderCards();

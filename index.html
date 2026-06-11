@@ -19,20 +19,25 @@
     --radius-lg: 12px;
     --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-  body {
-    font-family: var(--font);
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    min-height: 100vh;
-  }
+  body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; }
   .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
 
   /* Header */
-  .site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
+  .site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
   .logo { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-tertiary); text-transform: uppercase; }
   .logo span { color: var(--text-primary); }
 
-  /* Library view */
+  /* Tabs */
+  .tabs { display: flex; gap: 0; margin-bottom: 1.75rem; border-bottom: 0.5px solid var(--border); }
+  .tab-btn {
+    font-size: 14px; padding: 10px 20px; background: none; border: none;
+    color: var(--text-tertiary); cursor: pointer; font-family: var(--font);
+    border-bottom: 2px solid transparent; margin-bottom: -0.5px; transition: color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { color: #3C3489; border-bottom-color: #7F77DD; font-weight: 500; }
+
+  /* Library */
   .lib-header { margin-bottom: 1.5rem; }
   .eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
   h1 { font-size: 26px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
@@ -43,8 +48,7 @@
   .filter-btn {
     font-size: 13px; padding: 6px 16px; border-radius: 20px;
     border: 0.5px solid var(--border); background: var(--bg);
-    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
-    font-family: var(--font);
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s; font-family: var(--font);
   }
   .filter-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
   .filter-btn.active-all { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-hover); }
@@ -78,10 +82,9 @@
   .scenario-view { display: none; }
   .scenario-view.open { display: block; }
   .back-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 13px; color: var(--text-secondary); cursor: pointer;
-    margin-bottom: 1.25rem; background: none; border: none;
-    font-family: var(--font); padding: 0;
+    display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
+    color: var(--text-secondary); cursor: pointer; margin-bottom: 1.25rem;
+    background: none; border: none; font-family: var(--font); padding: 0;
   }
   .back-btn:hover { color: var(--text-primary); }
   .scenario-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
@@ -89,32 +92,25 @@
   .scenario-title { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
   .scenario-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
   .scenario-situation { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
-
-  /* Step layout */
   .steps { display: flex; min-height: 320px; }
   .step-nav { width: 150px; flex-shrink: 0; border-right: 0.5px solid var(--border); }
   .step-nav-item {
     padding: 14px 16px; font-size: 13px; color: var(--text-secondary);
-    cursor: pointer; border-left: 2px solid transparent; line-height: 1.3;
-    transition: background 0.1s;
+    cursor: pointer; border-left: 2px solid transparent; line-height: 1.3; transition: background 0.1s;
   }
   .step-nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
   .step-nav-item.active { color: #3C3489; border-left-color: #7F77DD; background: #EEEDFE; font-weight: 500; }
   .step-content { flex: 1; padding: 1.25rem 1.5rem; min-width: 0; }
   .step-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
   .step-body { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
-
-  /* Footer nav */
   .step-footer {
     padding: 1rem 1.5rem; border-top: 0.5px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--bg-secondary);
+    display: flex; justify-content: space-between; align-items: center; background: var(--bg-secondary);
   }
   .nav-btn {
     font-size: 13px; padding: 7px 18px; border-radius: var(--radius-md);
     border: 0.5px solid var(--border); background: var(--bg);
-    color: var(--text-primary); cursor: pointer; font-family: var(--font);
-    transition: background 0.12s;
+    color: var(--text-primary); cursor: pointer; font-family: var(--font); transition: background 0.12s;
   }
   .nav-btn:hover { background: var(--bg-secondary); }
   .nav-btn.primary { background: #534AB7; border-color: #534AB7; color: #EEEDFE; }
@@ -122,13 +118,91 @@
   .nav-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
   .progress { font-size: 12px; color: var(--text-tertiary); }
 
-  /* Completion */
-  .completion { text-align: center; padding: 2.5rem 1.5rem; }
-  .completion-icon { font-size: 32px; margin-bottom: 12px; }
-  .completion h2 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
-  .completion p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; }
-  .themes-pill-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1.5rem; }
-  .theme-pill { font-size: 12px; padding: 4px 10px; border-radius: 10px; background: var(--bg-secondary); color: var(--text-secondary); }
+  /* ── Quiz tab ── */
+  .quiz-header { margin-bottom: 1.5rem; }
+  .quiz-scenario-select { margin-bottom: 1.5rem; }
+  .quiz-scenario-select label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+  .quiz-scenario-select select {
+    width: 100%; padding: 9px 12px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border); background: var(--bg);
+    font-size: 14px; font-family: var(--font); color: var(--text-primary); cursor: pointer;
+    appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a8a84' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .quiz-scenario-select select:focus { outline: none; border-color: #7F77DD; }
+
+  .quiz-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .quiz-situation { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid var(--border); }
+  .quiz-situation-eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+  .quiz-situation-title { font-size: 16px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
+  .quiz-situation-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .quiz-situation-text { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+  .quiz-body { padding: 1.25rem 1.5rem; }
+  .quiz-q-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
+  .quiz-question { font-size: 15px; font-weight: 500; color: var(--text-primary); line-height: 1.5; margin-bottom: 1.25rem; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 14px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border); background: var(--bg);
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    text-align: left; font-family: var(--font); width: 100%;
+  }
+  .option:hover:not(:disabled) { border-color: #7F77DD; background: #EEEDFE; }
+  .option:disabled { cursor: default; }
+  .option-letter {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    background: var(--bg-secondary); border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; color: var(--text-secondary);
+  }
+  .option-text { font-size: 14px; color: var(--text-primary); line-height: 1.5; padding-top: 2px; }
+  .option.correct { border-color: #1D9E75; background: #E1F5EE; }
+  .option.correct .option-letter { background: #1D9E75; border-color: #1D9E75; color: #ffffff; }
+  .option.wrong { border-color: #D85A30; background: #FAECE7; }
+  .option.wrong .option-letter { background: #D85A30; border-color: #D85A30; color: #ffffff; }
+  .option.reveal-correct { border-color: #1D9E75; background: #E1F5EE; }
+  .option.reveal-correct .option-letter { background: #1D9E75; border-color: #1D9E75; color: #ffffff; }
+
+  .feedback-box { margin-top: 1.25rem; padding: 14px 16px; border-radius: var(--radius-md); font-size: 14px; line-height: 1.6; }
+  .feedback-box.correct { background: #E1F5EE; color: #085041; border: 0.5px solid #5DCAA5; }
+  .feedback-box.wrong { background: #FAECE7; color: #4A1B0C; border: 0.5px solid #F0997B; }
+  .feedback-box strong { font-weight: 500; display: block; margin-bottom: 4px; }
+
+  .quiz-footer {
+    padding: 1rem 1.5rem; border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; background: var(--bg-secondary);
+  }
+  .quiz-progress { font-size: 12px; color: var(--text-tertiary); }
+
+  /* Score screen */
+  .score-screen { padding: 2.5rem 1.5rem; text-align: center; }
+  .score-circle {
+    width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 500;
+  }
+  .score-circle.great { background: #E1F5EE; color: #085041; }
+  .score-circle.ok { background: #FAEEDA; color: #633806; }
+  .score-circle.low { background: #FAECE7; color: #4A1B0C; }
+  .score-title { font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+  .score-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.75rem; }
+  .score-breakdown { text-align: left; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1.5rem; }
+  .score-row { display: flex; gap: 12px; padding: 12px 16px; align-items: flex-start; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+  .score-row:last-child { border-bottom: none; }
+  .score-row-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .score-row-q { color: var(--text-primary); flex: 1; line-height: 1.45; }
+  .score-row-result { font-size: 12px; font-weight: 500; flex-shrink: 0; padding: 2px 8px; border-radius: 10px; margin-top: 1px; }
+  .score-row-result.c { background: #E1F5EE; color: #085041; }
+  .score-row-result.w { background: #FAECE7; color: #4A1B0C; }
+  .retry-btn {
+    font-size: 14px; padding: 10px 24px; border-radius: var(--radius-md);
+    background: #534AB7; border: none; color: #EEEDFE; cursor: pointer; font-family: var(--font);
+  }
+  .retry-btn:hover { background: #3C3489; }
 
   @media (max-width: 600px) {
     .steps { flex-direction: column; }
@@ -145,40 +219,100 @@
     <div class="logo"><span>LionsPride Associates</span> — LION Method</div>
   </header>
 
-  <!-- Library view -->
-  <div id="list-view">
-    <div class="lib-header">
-      <p class="eyebrow">Scenario library</p>
-      <h1>Real situations. Practice how you'd respond.</h1>
-      <p class="subtitle">Each scenario is drawn from real leadership engagements. Work through the challenge, understand the leader's behavior, and learn the right approach.</p>
-    </div>
-    <div class="filters" id="filters">
-      <button class="filter-btn active-all" data-filter="all" onclick="filter(this,'all')">All <span id="cnt"></span></button>
-      <button class="filter-btn" data-filter="Vision" onclick="filter(this,'Vision')">Vision</button>
-      <button class="filter-btn" data-filter="Command" onclick="filter(this,'Command')">Command</button>
-      <button class="filter-btn" data-filter="Architect" onclick="filter(this,'Architect')">Architect</button>
-      <button class="filter-btn" data-filter="Pride" onclick="filter(this,'Pride')">Pride</button>
-    </div>
-    <div class="grid" id="card-grid"></div>
+  <!-- Tab bar -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-library" onclick="switchTab('library')">Scenario library</button>
+    <button class="tab-btn" id="tab-quiz" onclick="switchTab('quiz')">Quiz</button>
   </div>
 
-  <!-- Scenario view -->
-  <div class="scenario-view" id="scenario-view">
-    <button class="back-btn" onclick="closeScenario()">&#8592; Back to library</button>
-    <div class="scenario-card">
-      <div class="scenario-hero">
-        <div class="scenario-tags" id="sv-tags"></div>
-        <div class="scenario-title" id="sv-title"></div>
-        <div class="scenario-situation" id="sv-situation"></div>
+  <!-- ══ LIBRARY TAB ══ -->
+  <div id="tab-library-content">
+    <div id="list-view">
+      <div class="lib-header">
+        <p class="eyebrow">Scenario library</p>
+        <h1>Real situations. Practice how you'd respond.</h1>
+        <p class="subtitle">Each scenario is drawn from real leadership engagements. Work through the challenge, understand the leader's behavior, and learn the right approach.</p>
       </div>
-      <div class="steps">
-        <div class="step-nav" id="step-nav"></div>
-        <div class="step-content" id="step-content"></div>
+      <div class="filters">
+        <button class="filter-btn active-all" data-filter="all" onclick="filter(this,'all')">All <span id="cnt"></span></button>
+        <button class="filter-btn" data-filter="Vision" onclick="filter(this,'Vision')">Vision</button>
+        <button class="filter-btn" data-filter="Command" onclick="filter(this,'Command')">Command</button>
+        <button class="filter-btn" data-filter="Architect" onclick="filter(this,'Architect')">Architect</button>
+        <button class="filter-btn" data-filter="Pride" onclick="filter(this,'Pride')">Pride</button>
       </div>
-      <div class="step-footer">
-        <button class="nav-btn" id="prev-btn" onclick="prevStep()">&#8592; Previous</button>
-        <span class="progress" id="progress-label"></span>
-        <button class="nav-btn primary" id="next-btn" onclick="nextStep()">Next &#8594;</button>
+      <div class="grid" id="card-grid"></div>
+    </div>
+
+    <div class="scenario-view" id="scenario-view">
+      <button class="back-btn" onclick="closeScenario()">&#8592; Back to library</button>
+      <div class="scenario-card">
+        <div class="scenario-hero">
+          <div class="scenario-tags" id="sv-tags"></div>
+          <div class="scenario-title" id="sv-title"></div>
+          <div class="scenario-situation" id="sv-situation"></div>
+        </div>
+        <div class="steps">
+          <div class="step-nav" id="step-nav"></div>
+          <div class="step-content" id="step-content"></div>
+        </div>
+        <div class="step-footer">
+          <button class="nav-btn" id="prev-btn" onclick="prevStep()">&#8592; Previous</button>
+          <span class="progress" id="progress-label"></span>
+          <button class="nav-btn primary" id="next-btn" onclick="nextStep()">Next &#8594;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ TAB ══ -->
+  <div id="tab-quiz-content" style="display:none">
+    <div class="quiz-header">
+      <p class="eyebrow">Quiz</p>
+      <h1>Test your judgment</h1>
+      <p class="subtitle">Choose a scenario, read the situation, and pick the best response. You'll get immediate feedback on each answer.</p>
+    </div>
+
+    <div class="quiz-scenario-select">
+      <label for="quiz-select">Choose a scenario</label>
+      <select id="quiz-select" onchange="loadQuiz(this.value)">
+        <option value="">— Select a scenario —</option>
+      </select>
+    </div>
+
+    <div id="quiz-area" style="display:none">
+      <!-- active question -->
+      <div id="quiz-active">
+        <div class="quiz-card">
+          <div class="quiz-situation">
+            <div class="quiz-situation-eyebrow">The situation</div>
+            <div class="quiz-situation-tags" id="q-tags"></div>
+            <div class="quiz-situation-title" id="q-title"></div>
+            <div class="quiz-situation-text" id="q-situation"></div>
+          </div>
+          <div class="quiz-body">
+            <div class="quiz-q-label">What should the EA do?</div>
+            <div class="quiz-question" id="q-question"></div>
+            <div class="options" id="q-options"></div>
+            <div id="q-feedback" style="display:none"></div>
+          </div>
+          <div class="quiz-footer">
+            <span class="quiz-progress" id="q-progress"></span>
+            <button class="nav-btn primary" id="q-next-btn" style="display:none" onclick="nextQuestion()">Next question &#8594;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- score screen -->
+      <div id="quiz-score" style="display:none">
+        <div class="quiz-card">
+          <div class="score-screen">
+            <div class="score-circle" id="sc-circle"></div>
+            <div class="score-title" id="sc-title"></div>
+            <div class="score-subtitle" id="sc-subtitle"></div>
+            <div class="score-breakdown" id="sc-breakdown"></div>
+            <button class="retry-btn" onclick="retryQuiz()">Try again</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -192,125 +326,352 @@ const scenarios = [
     challenge:"The leader had likely already verbally committed before the EA knew the invitation existed — a pattern that had happened twice before. The EA had to either make the conflict work or clean it up gracefully, without knowing the full state of the commitment.",
     behavior:"She is magnetic and opportunity-driven. She communicates via voice memo, avoids saying no in person, and relies on her EA to manage the fallout from impulse commitments. She has expressed ambition for a major stage by year-end.",
     action:"Audit the clinical schedule for Friday flexibility. Contact the conference organizers to understand logistics and whether she has formally confirmed. Explore a Thursday travel option. Present two clear paths to the leader: a way to make it work, and a graceful exit script if it cannot. Do not ask an open-ended question — bring a decision.",
-    learning:"A Vision leader does not wait for clarity — they create options and present decisions. Protecting the leader from the consequences of her own impulse requires proactive triage, not reactive execution. The clinical relationship and the speaking opportunity both matter; the EA's job is to find out which matters more right now and act accordingly.",
-    themes:"Impulse-driven commitments · Calendar protection · Clinical continuity · Proactive decision-making"
+    learning:"A Vision leader does not wait for clarity — they create options and present decisions. Protecting the leader from the consequences of her own impulse requires proactive triage, not reactive execution.",
+    themes:"Impulse-driven commitments · Calendar protection · Proactive decision-making",
+    quiz: {
+      question: "The leader has left a voice memo saying 'I think we should do this. Figure it out.' You suspect she may have already verbally committed. What do you do first?",
+      options: [
+        { letter:"A", text:"Reply to the voice memo asking her to confirm whether she has committed before you do anything else." },
+        { letter:"B", text:"Audit the clinical schedule, contact the conference organizers to check commitment status, explore a Thursday travel option, and bring her two clear paths — one to make it work, one to exit gracefully." },
+        { letter:"C", text:"Assume she has committed and immediately start rescheduling the Friday clinical appointment." },
+        { letter:"D", text:"Email the conference organizers to withdraw on her behalf, then let her know you handled the conflict." }
+      ],
+      correct: 1,
+      feedback: {
+        correct: "Exactly right. A Vision leader has likely already committed — your job is to triage the conflict and bring a decision, not ask open-ended questions or act unilaterally. Two clear options gives her agency without adding work.",
+        wrong: [
+          "Asking her to confirm first puts the work back on her and costs time. She told you to figure it out — that means you gather the facts and bring the options.",
+          "Assuming she committed without checking creates risk. You need to verify with the organizers before rescheduling a critical clinical appointment.",
+          "Withdrawing without her sign-off is too far. You don't own that decision — and she may have already committed publicly."
+        ]
+      }
+    }
   },
   {
     id:2, title:"The solo practitioner — building the working rhythm", archetypes:["Vision"],
     situation:"After 90 days as the EA to a solo physical therapist, the EA had observed clear behavioral patterns but had no formal playbook. The leader had said 'I'm a lot. You'll figure it out.' The EA needed to design a working relationship plan and present it in a format the leader would actually engage with.",
-    challenge:"The leader does not read documents. She responds to voice memos and short videos. A traditional memo would not land. The EA had to design the working relationship itself — and then present it in the right medium — without being told to do either.",
-    behavior:"Warm, generous, and idea-driven but not operationally oriented. She gives no negative feedback and no manual. She hints that she wants more from the EA without specifying what. Her senior staff have learned to read her over years.",
-    action:"Design a plan covering: how meetings will run, how ideas will be captured and triaged, how calendar commitments will be managed before they are verbalized externally, how the EA will coordinate with senior staff, and what the EA will stop doing reactively. Present as a short Loom-style video or 90-second voice memo with a one-page visual backup — not a written memo.",
-    learning:"A Vision leader will not engage with a plan in a format that does not match how she thinks. The EA's job is not just to design the right working system — it is to deliver it in the right medium. Matching communication format to leader type is as important as the content itself.",
-    themes:"Communication format matching · Working rhythm design · Proactive relationship management · 90-day planning"
+    challenge:"The leader does not read documents. She responds to voice memos and short videos. A traditional memo would not land. The EA had to design the working relationship itself and present it in the right medium.",
+    behavior:"Warm, generous, and idea-driven but not operationally oriented. She gives no negative feedback and no manual. Her senior staff have learned to read her over years.",
+    action:"Design a plan covering how meetings will run, how ideas will be captured, how calendar commitments will be managed, and what the EA will stop doing reactively. Present as a short Loom-style video or 90-second voice memo with a one-page visual backup — not a written memo.",
+    learning:"A Vision leader will not engage with a plan in a format that does not match how she thinks. Matching communication format to leader type is as important as the content itself.",
+    themes:"Communication format matching · Working rhythm design · Proactive relationship management",
+    quiz: {
+      question: "You've designed a strong 90-day working rhythm plan. How do you present it to this leader?",
+      options: [
+        { letter:"A", text:"Send a well-structured written memo with clear headings and bullet points so she can reference it later." },
+        { letter:"B", text:"Schedule a formal 30-minute meeting to walk her through the plan slide by slide." },
+        { letter:"C", text:"Record a short Loom-style video or 90-second voice memo with a one-page visual as backup — matching how she actually processes information." },
+        { letter:"D", text:"Share the plan with her senior staff first so they can help translate it for her." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right. The content of the plan is only half the job. This leader processes through audio and video, not documents. A written memo would go unread. Matching the medium to the person is what makes the work land.",
+        wrong: [
+          "She does not read documents. A written memo, however well structured, will not get her attention — and she has told you this indirectly through her behavior.",
+          "A formal walkthrough in a meeting assumes she'll engage in a linear, structured way. She processes in conversation and in motion — not in sit-down reviews.",
+          "Going through her staff first signals that you can't reach her directly. It also creates noise before you've landed the plan."
+        ]
+      }
+    }
   },
   {
     id:3, title:"The 28-minute meeting", archetypes:["Command"],
     situation:"A newly appointed interim executive director restructured the weekly EA check-in from 60 minutes to 28 and sent a clear agenda format in advance: decisions needed, calendar urgencies, blockers only. The EA had nine items from the prior week.",
-    challenge:"The prior ED used the meeting to think out loud and build relational context. The new leader has no tolerance for drift. Nine items cannot all fit in 28 minutes — and some items do not fit the new agenda format at all.",
-    behavior:"Direct, brisk, and decisive. She reads everything before she arrives. She restructured meetings in her first months and stopped attending anything that could be handled over email. She is warm but surgically protective of time.",
-    action:"Build a tight written agenda with only 3 items maximum: the most pressing decision needed, one calendar item, one blocker. Send it the evening before. Handle donor follow-ups and board relationship signals in a separate asynchronous brief. Surface the team morale observation in a short written note flagged 'FYI, no action needed now.' Do not try to fit everything into 28 minutes.",
-    learning:"A Command leader tells you exactly how she wants to be supported. The EA's job is to execute that format precisely — not to find workarounds that serve the EA's need for face time. Items that do not fit the format go elsewhere. The meeting is for decisions, not for relationship maintenance.",
-    themes:"Agenda design · Meeting discipline · Asynchronous communication · Format compliance · Triage under constraint"
+    challenge:"The prior ED used the meeting to think out loud. The new leader has no tolerance for drift. Nine items cannot all fit in 28 minutes — some don't fit the new format at all.",
+    behavior:"Direct, brisk, and decisive. She reads everything before she arrives. She restructured meetings in her first months and stopped attending anything that could be handled over email.",
+    action:"Build a tight written agenda with only 3 items maximum. Send it the evening before. Handle donor follow-ups and board relationship signals asynchronously. Surface team morale observations as a short written note flagged FYI.",
+    learning:"A Command leader tells you exactly how she wants to be supported. The EA's job is to execute that format precisely, not to find workarounds that serve the EA's need for face time.",
+    themes:"Agenda design · Meeting discipline · Asynchronous communication · Triage under constraint",
+    quiz: {
+      question: "You have nine items before a 28-minute check-in with your new ED. Her agenda format is: decisions needed, calendar urgencies, blockers only. What do you bring to the meeting?",
+      options: [
+        { letter:"A", text:"All nine items — she needs to know everything, and you can move quickly if you're concise." },
+        { letter:"B", text:"The five most important items, trimmed to one sentence each, to make the best use of the 28 minutes." },
+        { letter:"C", text:"A maximum of 3 items that fit her format exactly: one decision needed, one calendar urgency, one blocker. Handle everything else asynchronously." },
+        { letter:"D", text:"Ask her to extend the meeting to 45 minutes this week given the backlog." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Correct. She gave you a format and a time limit — your job is to honor both, not to negotiate them. Items that don't fit the format go elsewhere: asynchronous notes, a brief written update, or not at all. The meeting is for decisions, not for catching up.",
+        wrong: [
+          "Bringing all nine items ignores the format she set. She restructured this meeting deliberately — overloading it on week one signals you haven't read her.",
+          "Five items trimmed to one sentence is still ignoring her explicit format. She told you what the meeting is for: decisions, urgencies, blockers. That's the filter.",
+          "Asking to extend the meeting is the wrong move with a Command leader. She restructured to 28 minutes for a reason. Requesting more time signals you can't triage."
+        ]
+      }
+    }
   },
   {
     id:4, title:"The brilliant assistant filling the wrong gaps", archetypes:["Vision","Architect"],
     situation:"A Latina nonprofit founder hired an excellent EA six months prior. The EA was building systems the founder could not and would not use — optimizing SharePoint she refused to open, creating project plans for ideas she had already moved past. The founder did not feel supported despite the EA being objectively competent.",
-    challenge:"The EA was doing real work — just not the right work. The founder cannot engage with tools that do not match how she thinks. The coach has to deliver a real diagnosis without blaming the EA or the founder.",
-    behavior:"Warm, idea-driven, and self-aware about her own operational style. She told the coach she sometimes needs to be 'handheld through operational decisions.' She generates ideas faster than her team can execute. She is exhausted and somewhat fragile.",
-    action:"Diagnose clearly: the EA is supporting the organization's systems rather than the founder's brain. Reframe the role — the EA's job is to be the founder's operating partner, not the organization's system builder. Propose a reset: a two-week listening period where the EA shadows the founder and identifies what she actually needs in real time. Do not blame the EA. Present a path that keeps the EA and makes her useful.",
-    learning:"A Vision leader with Architect tendencies needs an EA who supports how she actually thinks — not how a system says she should think. Operational support must be designed around the leader's real workflow, not the org's ideal workflow. Filling the wrong gaps is not the EA's fault when no one defined the right gaps.",
-    themes:"Vision/Architect hybrid · Role definition · Support misalignment · Founder operating style · System rejection"
+    challenge:"The EA was doing real work — just not the right work. The coach has to deliver a real diagnosis without blaming the EA or the founder.",
+    behavior:"Warm, idea-driven, and self-aware. She sometimes needs to be 'handheld through operational decisions.' She generates ideas faster than her team can execute.",
+    action:"Diagnose clearly: the EA is supporting the organization's systems rather than the founder's brain. Propose a reset — a two-week listening period where the EA shadows the founder and identifies what she actually needs in real time.",
+    learning:"Operational support must be designed around the leader's real workflow, not the org's ideal workflow. Filling the wrong gaps is not the EA's fault when no one defined the right gaps.",
+    themes:"Role definition · Support misalignment · Founder operating style · System rejection",
+    quiz: {
+      question: "The founder feels unsupported even though the EA is doing real, competent work. As the coach, how do you diagnose and address this?",
+      options: [
+        { letter:"A", text:"Tell the founder she needs to give better direction — the EA can only work with the information provided." },
+        { letter:"B", text:"Recommend the EA take a systems management course so the tools she's building are more intuitive for the founder." },
+        { letter:"C", text:"Diagnose clearly that the EA is supporting the organization's systems rather than the founder's brain. Propose a two-week reset where the EA shadows the founder to identify what she actually needs in real time." },
+        { letter:"D", text:"Suggest the founder hire a second EA with a different skill set, keeping the current one focused on systems." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right diagnosis. The EA is competent — the problem is that no one defined the right gaps. The reset gives the EA a chance to observe how the founder actually works and redirect their effort accordingly. The fix is role clarity, not a personnel change.",
+        wrong: [
+          "Blaming the founder for poor direction misses the point — and she's already fragile in this conversation. The coach's job is to find a path forward, not assign fault.",
+          "The issue isn't the quality of the tools — it's that the founder can't engage with tools-based support at all. Better SharePoint won't fix a workflow mismatch.",
+          "Adding a second EA doesn't solve the core problem: the current EA doesn't know what the founder actually needs. That's the thing to fix first."
+        ]
+      }
+    }
   },
   {
     id:5, title:"Board meeting notes with a member politics problem", archetypes:["Pride"],
-    situation:"An association ED asked her EA to take minutes at a heated board meeting where a member pushed twice for a vote on a politically charged bill. No vote was taken; the item was tabled 7-2. The ED told the EA beforehand: 'I want the minutes to reflect that we discussed the bill, but I don't want the disagreement immortalized.'",
-    challenge:"The EA must write legally accurate minutes while honoring the ED's request. The two dissenting voters — including the member who pushed hardest — will read those minutes and look for whether their position is reflected.",
-    behavior:"Warm, deeply networked, and conflict-averse. She believes most conflict resolves through patient one-on-one conversations. She has been known to pull agenda items the day before a meeting if the room is not ready. She trusts her EA to navigate this carefully.",
-    action:"Write minutes that accurately capture: the motion to table, the 7-2 vote, and the fact that a discussion occurred. Do not include back-and-forth debate, individual member arguments, or the number of times the principal pushed for a vote. Use neutral, procedural language. If asked by a board member why more detail was not included, refer to the bylaws and the chapter's standard minutes format.",
-    learning:"A Pride leader manages relationships with long time horizons. Her request is not to falsify the record — it is to keep the official record from becoming a weapon in an ongoing conflict. The EA's job is to be accurate and procedural without being inflammatory. Minutes are a legal document, not a transcript.",
-    themes:"Board governance · Minutes writing · Political sensitivity · Relationship management · Procedural accuracy"
+    situation:"An association ED asked her EA to take minutes at a heated board meeting where a member pushed twice for a vote on a politically charged bill. The item was tabled 7-2. The ED said: 'I want the minutes to reflect that we discussed the bill, but I don't want the disagreement immortalized.'",
+    challenge:"The EA must write legally accurate minutes while honoring the ED's request. The two dissenting voters will read those minutes and look for whether their position is reflected.",
+    behavior:"Warm, deeply networked, and conflict-averse. She trusts her EA to navigate sensitive situations carefully.",
+    action:"Write minutes that capture the motion to table, the 7-2 vote, and the fact that a discussion occurred — without capturing debate, individual arguments, or how many times the member pushed for a vote. Use neutral procedural language.",
+    learning:"A Pride leader manages relationships with long time horizons. Her request is not to falsify the record — it is to keep the official record from becoming a weapon in an ongoing conflict.",
+    themes:"Board governance · Minutes writing · Political sensitivity · Procedural accuracy",
+    quiz: {
+      question: "How do you write the minutes for this board meeting?",
+      options: [
+        { letter:"A", text:"Capture the full discussion including each member's arguments and the number of times the motion was raised — minutes should be a complete record." },
+        { letter:"B", text:"Omit the vote entirely and note only that the bill was mentioned in passing to avoid creating a record of division." },
+        { letter:"C", text:"Write neutral procedural language: note that the bill was discussed, that a motion to table was made, and that it passed 7-2. Do not capture debate or individual positions." },
+        { letter:"D", text:"Record the vote as unanimous to smooth over the conflict, since the motion to table did pass." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Exactly right. Minutes are a legal document, not a transcript. The bylaws require accuracy on motions and votes — not the capture of debate. Neutral procedural language gives you a record that's accurate without becoming ammunition in an ongoing conflict.",
+        wrong: [
+          "Full capture of the debate is not required by most bylaws and directly contradicts the ED's request. The official record doesn't need to be a transcript to be accurate.",
+          "Omitting the vote entirely is a falsification. The 7-2 vote is a material fact that belongs in the record — the ED's request was about the debate, not the outcome.",
+          "Recording a unanimous vote when it was 7-2 is falsification of a legal document. This is not something the ED asked for and would expose both of you to serious risk."
+        ]
+      }
+    }
   },
   {
     id:6, title:"One leader, four organizations, one inbox", archetypes:["Vision"],
-    situation:"A Houston serial founder running four simultaneous organizations asked his EA to 'handle the urgent stuff' before he landed from a flight. His inbox had 90 unread messages from the weekend spanning all four organizations. He gave no definition of urgent.",
-    challenge:"No charge-back system exists between the organizations. Some emails cannot be clearly attributed to one entity. The leader forwards everything with no context and disappears for days. He has not defined urgent. The EA has 90 minutes and cannot reach him.",
-    behavior:"Generous, magnetic, and deeply relational. He commits to things in the moment, sends voice memos at midnight, and thinks out loud across all four entities simultaneously. He never met a meeting he didn't want to lengthen.",
-    action:"Triage by risk, not by sender. Escalate: the journalist request (who is she asking to speak as?) and the board governance question (structural risk). Handle: the board member voicemail. Defer: the documentary distribution question, the personal pastor request. Flag for landing: the two donor follow-ups and the conference keynote. Do not draft responses on items where the organizational entity is unclear.",
-    learning:"A Vision leader operating across multiple entities needs an EA who can hold organizational boundaries the leader himself does not maintain. Triage is not about importance — it is about risk and clarity. When the entity is unclear, the EA flags rather than acts.",
-    themes:"Multi-entity triage · Inbox management · Organizational boundary-holding · Risk-based prioritization · Undefined urgency"
+    situation:"A Houston serial founder running four simultaneous organizations asked his EA to 'handle the urgent stuff' before he landed from a flight. His inbox had 90 unread messages spanning all four organizations. He gave no definition of urgent.",
+    challenge:"No charge-back system exists between the organizations. Some emails cannot be clearly attributed to one entity. The leader has not defined urgent. The EA has 90 minutes and cannot reach him.",
+    behavior:"Generous, magnetic, and deeply relational. He commits to things in the moment, sends voice memos at midnight, and thinks out loud across all four entities simultaneously.",
+    action:"Triage by risk, not by sender. Escalate items with structural or reputational risk. Handle low-risk items directly. Defer relationship-based but non-urgent items. Flag for landing anything where the organizational entity is unclear.",
+    learning:"Triage is not about importance — it is about risk and clarity. When the entity is unclear, the EA flags rather than acts.",
+    themes:"Multi-entity triage · Inbox management · Risk-based prioritization",
+    quiz: {
+      question: "You have 90 minutes and 90 unread messages across four organizations. The leader is unreachable. A journalist has emailed asking to speak with 'the founder' about a recent controversy — it's unclear which organization she means. What do you do?",
+      options: [
+        { letter:"A", text:"Reply to the journalist explaining that the founder is traveling and will follow up — this buys time without committing to anything." },
+        { letter:"B", text:"Forward the email to the leader's phone with a note so it's waiting when he lands." },
+        { letter:"C", text:"Flag it for him on landing with a note on the ambiguity — do not reply or attribute the request to a specific organization until he has confirmed." },
+        { letter:"D", text:"Identify which organization the journalist most likely means based on the controversy and draft a holding reply on that entity's behalf." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right. This item carries reputational risk and entity ambiguity — both are reasons to flag, not act. Replying on behalf of the wrong organization, or replying at all without his knowledge, could create real exposure. Hold it cleanly for landing.",
+        wrong: [
+          "Replying to the journalist — even to buy time — is acting on his behalf without knowing which entity she's contacting or what the controversy involves. That's a risk you don't have authority to take.",
+          "Forwarding to his phone is fine as a secondary step, but it doesn't resolve the entity ambiguity and doesn't protect him if the journalist follows up before he lands.",
+          "Drafting a reply on a specific entity's behalf when the entity is unclear is the highest-risk option. If you attribute the request to the wrong organization, you've created a problem that didn't exist."
+        ]
+      }
+    }
   },
   {
     id:7, title:"The grant submission that makes or breaks the quarter", archetypes:["Architect","Command"],
-    situation:"A hardware startup's technical co-founder needed a federal grant submitted by Friday at 5 p.m. The EA had never coordinated a grant submission. The previous EA's files were partly organized and partly in an archived inbox. The portal registration had expired. Three letters of support were in various states of readiness. The budget did not yet exist.",
-    challenge:"The leader communicates in written specifications and responds to everything with 3-5 clarifying questions before saying yes. The portal is in the previous EA's name. The highest-risk letter is held up by a slow legal team.",
-    behavior:"Precise, technical, and quietly intense. He sent a detailed written note on Sunday assigning clear ownership. He trusts written process over conversation. He does not skip clarifying questions. He is under significant pressure but does not externalize it emotionally.",
-    action:"Build a day-by-day plan: Monday — contact the federal portal help desk to begin re-registration, identify who can write the program officer letter, confirm partner legal team status and set a Tuesday deadline. Tuesday — draft the budget framework for leader review. Wednesday — deliver complete budget draft for leader review, confirm all three letters are in motion. Thursday — assemble final package, final review. Present this plan to the leader in writing with specific questions only where his input is required.",
-    learning:"An Architect/Command leader does not want reassurance — he wants a written plan with clear accountability. The EA's job is to build the operational structure the leader would have built himself if he had time. Every communication should be in writing, specific, and action-oriented.",
-    themes:"Grant coordination · Deadline management · Written communication · Operational planning under pressure · First-time task ownership"
+    situation:"A hardware startup's technical co-founder needed a federal grant submitted by Friday at 5 p.m. The EA had never coordinated a grant submission. The portal registration had expired. Three letters of support were in various states of readiness. The budget did not yet exist.",
+    challenge:"The leader communicates in written specifications and responds to everything with 3-5 clarifying questions before saying yes. The portal is in the previous EA's name.",
+    behavior:"Precise, technical, and quietly intense. He trusts written process over conversation. He is under pressure but does not externalize it emotionally.",
+    action:"Build a day-by-day written plan with named owners and deadlines. Present it in writing with specific questions only where his input is required. Do not send a general status update.",
+    learning:"An Architect/Command leader does not want reassurance — he wants a written plan with clear accountability. Every communication should be in writing, specific, and action-oriented.",
+    themes:"Grant coordination · Deadline management · Written communication · Operational planning under pressure",
+    quiz: {
+      question: "It's Monday morning. The grant is due Friday at 5 p.m. You've never done this before. How do you communicate your plan to this leader?",
+      options: [
+        { letter:"A", text:"Call him to talk through the situation and get his guidance on how to proceed — this is too high-stakes to handle without real-time alignment." },
+        { letter:"B", text:"Send a written day-by-day plan with named owners and specific deadlines, and flag only the decisions that genuinely require his input." },
+        { letter:"C", text:"Send a general update letting him know you're on it and will flag anything urgent — you don't want to bother him with details until you know more." },
+        { letter:"D", text:"Ask him to lead the coordination since you've never done a federal grant submission before." }
+      ],
+      correct: 1,
+      feedback: {
+        correct: "Right. An Architect/Command leader trusts written process over conversation. He wants to see that you've built the structure — not that you're checking in. A day-by-day plan with owners and deadlines shows him you can hold this, and flags only what needs his judgment.",
+        wrong: [
+          "Calling him for guidance signals that you need him to lead. He assigned this to you — your job is to build the structure and come back with specific questions, not open-ended ones.",
+          "A general 'I'm on it' update gives him nothing to assess and nothing to respond to. He'll respond with clarifying questions — which is what you want to minimize by giving him a real plan.",
+          "Asking him to lead is the opposite of what he needs. He assigned this because he doesn't have the bandwidth. Your job is to run the coordination and surface only the decisions that are genuinely his."
+        ]
+      }
+    }
   },
   {
     id:8, title:"The executive who replies in two words — the 12:30 call", archetypes:["Command"],
-    situation:"A senior logistics software executive was driving to a Fortune 100 customer meeting when a 12:30 call appeared on his calendar — a contract renewal from a different major account. He texted his EA at 7:51 a.m.: '12:30 call. Get me ready.' He would be unreachable from 10 a.m. to noon.",
-    challenge:"The EA had 57 minutes before losing him. The prep had to be delivered in a 25-minute window by text. A careful re-read of the email chain revealed the customer was reconsidering the scope of the contract.",
-    behavior:"Direct, fast, and unsentimental. He texts, not calls. He reads two-line summaries, not five-bullet updates. He has expanded the EA's scope twice without commentary and has never given direct feedback.",
-    action:"Use the 57 minutes to pull: the contract value, the prior QBR notes, the two open issues (pricing concern and product feature complaint), and the email chain showing scope reconsideration. Synthesize into a 4-line text brief. Deliver it at 12:05 by text — not before noon. Do not call. Do not send a document. Do not include context he does not need.",
-    learning:"A Command leader does not want a briefing document — he wants the four things he needs to walk into a room. The EA's job is to read the signals he missed and surface only what matters, in the format he uses, at the moment he can act on it.",
-    themes:"Executive prep · Compressed timeline · Text-based communication · Signal recognition · Client risk identification"
+    situation:"A senior logistics executive texted at 7:51 a.m.: '12:30 call. Get me ready.' A contract renewal call appeared on his calendar. He would be unreachable from 10 a.m. to noon. A careful re-read of the email chain reveals the customer is reconsidering the scope of the contract.",
+    challenge:"The EA has 57 minutes before losing him. The prep must be delivered in a 25-minute window by text.",
+    behavior:"Direct, fast, unsentimental. He texts, not calls. He reads two-line summaries, not five-bullet updates.",
+    action:"Synthesize into a 4-line text brief: account name, contract value, the two open issues, and the key signal from the email chain. Deliver at 12:05 by text — not before noon.",
+    learning:"A Command leader does not want a briefing document — he wants the four things he needs to walk into a room.",
+    themes:"Executive prep · Compressed timeline · Signal recognition · Client risk identification",
+    quiz: {
+      question: "You have 57 minutes before he goes dark. You've found the two open issues and a signal in the email chain that the customer may be reconsidering the contract scope. What do you send, and when?",
+      options: [
+        { letter:"A", text:"Send a detailed briefing document by 9:30 a.m. with full background on the account, the open issues, and the email chain so he has everything." },
+        { letter:"B", text:"Text him now with everything you've found so he has maximum time to process it before the call." },
+        { letter:"C", text:"Compile a 4-line text brief — account name, contract value, the two open issues, and the scope reconsideration signal — and send it at 12:05, after his morning meeting ends." },
+        { letter:"D", text:"Call him at 11:55 to walk him through the prep verbally before the 12:30 call." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Exactly right on both the format and the timing. He reads two-line summaries, not documents. And sending it before noon means it hits while he's in a different meeting — he can't act on it then. 12:05 puts it in his hand in the 25-minute window before the call when he can actually use it.",
+        wrong: [
+          "A briefing document is the wrong format for this leader — he texts, he doesn't read briefs. And sending it at 9:30 means it arrives while he's in another meeting and may get buried.",
+          "Texting now is the right format, wrong timing. He goes dark at 10 a.m. and won't see it until he surfaces — by which point it may have scrolled up. Send it when he can act on it.",
+          "Calling him is the wrong channel for this leader entirely. He's also in a meeting until noon. Calls disrupt — a well-timed text lands cleanly."
+        ]
+      }
+    }
   },
   {
     id:9, title:"The executive who replies in two words — five things at once", archetypes:["Command"],
-    situation:"The same logistics executive was in back-to-back meetings until 4:15. His EA had five simultaneous items: a board report due at 5 p.m., a sensitive partner scheduling request, an RSVPs spreadsheet behind, an HR escalation with outside counsel, and a communications crisis with a trade press reporter.",
-    challenge:"Two items carried real organizational risk. One had a hard external deadline. One involved a partner relationship only the leader maintained. The leader had given partial direction but said nothing about the HR matter or the board report deadline.",
-    behavior:"He has said explicitly: if a lawyer or PR firm needs to see something, they see it before he responds. He routes sensitive matters to counsel and comms immediately and has given the EA a clear framework for handling legal and PR exposure.",
-    action:"In the next 2.5 hours: (1) Route the HR email to outside counsel immediately — do not draft a response, do not wait for him. (2) Flag the comms situation to the PR firm so they have lead time before his 4:30. (3) Assemble the board report — the only item with a hard deadline. (4) Send a short note to the partner with two available windows. (5) Forward the board member's cohort analysis request. Escalate to him before 4:15: the HR matter and the board report status.",
-    learning:"A Command leader gives standing instructions for a reason. The EA's job is to execute those instructions without waiting for case-by-case confirmation. When items carry legal or reputational risk, they go to the right people immediately — not into the holding queue.",
-    themes:"Multi-priority triage · Legal escalation · PR coordination · Board reporting · Standing instructions · Risk routing"
+    situation:"The same logistics executive is in back-to-back meetings until 4:15. You have five simultaneous items: a board report due at 5 p.m., a sensitive partner scheduling request, a late RSVPs spreadsheet, an HR escalation with outside counsel, and a communications crisis with a trade press reporter.",
+    challenge:"Two items carry real organizational risk. One has a hard external deadline. The leader has given partial direction but said nothing about the HR matter or the board report.",
+    behavior:"He has said explicitly: if a lawyer or PR firm needs to see something, they see it before he responds. He routes sensitive matters to counsel and comms immediately.",
+    action:"Route the HR email to outside counsel immediately. Flag the comms situation to the PR firm now. Assemble the board report. Send a short note to the partner with two available windows. Escalate to him before 4:15: the HR matter and the board report status.",
+    learning:"A Command leader gives standing instructions for a reason. Legal or reputational risk goes to the right people immediately — not into the holding queue.",
+    themes:"Multi-priority triage · Legal escalation · PR coordination · Standing instructions · Risk routing",
+    quiz: {
+      question: "The HR escalation involves a complaint that may require outside counsel. The leader is in meetings and hasn't seen it. What do you do?",
+      options: [
+        { letter:"A", text:"Hold the HR email until the leader surfaces at 4:15 so he can decide whether to involve counsel himself." },
+        { letter:"B", text:"Draft a response to the HR email on the leader's behalf to acknowledge receipt and buy time." },
+        { letter:"C", text:"Route the HR email to outside counsel immediately per his standing instruction, and flag him before 4:15 that you've done so." },
+        { letter:"D", text:"Forward the HR email to HR leadership to handle internally before deciding whether outside counsel is needed." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right. He has a standing instruction: if a lawyer needs to see something, they see it before he responds. Your job is to execute that instruction — not to wait for case-by-case confirmation. You also flag him before 4:15 so he knows counsel has been looped in before he walks out of meetings.",
+        wrong: [
+          "Holding it until 4:15 means outside counsel gets it later, which shrinks their response window and increases risk. Standing instructions exist precisely so you don't have to wait for him.",
+          "Drafting a response on his behalf to an HR matter is high-risk territory. This is not a routine acknowledgment — it's a potential legal matter. Do not create a written record without counsel's input.",
+          "Routing to HR leadership before counsel adds a step and delays the people who actually need to see it. His standing instruction names counsel specifically — honor it."
+        ]
+      }
+    }
   },
   {
     id:10, title:"Four and a half hours a week and a successor on the way", archetypes:["Architect"],
-    situation:"An interim executive director of a small national nonprofit asked her EA — allocated at only 4.5 hours per week — to recommend how to split time between running operational support and documenting administrative procedures for her successor. She wanted the EA's thinking by Friday.",
+    situation:"An interim executive director asked her EA — allocated at only 4.5 hours per week — to recommend how to split time between operational support and documenting procedures for her successor. She wanted the EA's thinking by Friday.",
     challenge:"4.5 hours is genuinely tight for both tracks. If documentation crowds out operations, the calendar slips. If operations crowds out documentation, the successor inherits an organization held together by one person's memory.",
-    behavior:"Precise, systems-oriented, and acutely aware she is interim. She maintains a shared document tracking every recurring task and which ones need an SOP. She frames her primary deliverable as the system her successor inherits, not the work she does this year.",
-    action:"Propose a 60/40 split: 2.7 hours on operations, 1.8 hours on documentation. Prioritize documentation in this order: (1) calendar management protocol, (2) board meeting prep checklist, (3) donor acknowledgment cadence. Present the proposal in writing with a one-paragraph rationale per priority. Flag the tradeoff explicitly. Ask her to confirm the allocation before Friday.",
-    learning:"An Architect leader wants the EA to show their reasoning, not just their answer. Presenting a clear tradeoff with a rationale — rather than just a recommendation — earns trust with this leader type. The EA's job is to make the constraint visible, not to pretend it does not exist.",
-    themes:"Time allocation · Succession planning · Documentation priority · Tradeoff communication · Interim leadership support"
+    behavior:"Precise, systems-oriented, and acutely aware she is interim. She frames her primary deliverable as the system her successor inherits.",
+    action:"Propose a 60/40 split with a rationale per priority. Flag the tradeoff explicitly. Ask her to confirm before Friday.",
+    learning:"An Architect leader wants the EA to show their reasoning, not just their answer. Presenting a clear tradeoff with a rationale earns trust with this leader type.",
+    themes:"Time allocation · Succession planning · Documentation priority · Tradeoff communication",
+    quiz: {
+      question: "How do you present your time allocation recommendation to this leader?",
+      options: [
+        { letter:"A", text:"Propose a 50/50 split — it's the fairest approach given that both tracks matter equally." },
+        { letter:"B", text:"Tell her you'll do your best across both tracks and let her know if things start to slip." },
+        { letter:"C", text:"Recommend a specific split with a written rationale for each priority, make the tradeoff explicit, and ask her to confirm the allocation before you begin." },
+        { letter:"D", text:"Ask her which track she wants to prioritize and let her decide the split herself." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right. An Architect leader wants to see your reasoning — not just your answer. A specific split with a written rationale per priority shows you've thought through the constraint. Making the tradeoff explicit respects her intelligence and gives her something concrete to react to. Asking for confirmation before Friday closes the loop.",
+        wrong: [
+          "A 50/50 split without rationale looks like you avoided the hard thinking. She has told you through her behavior that documentation is the primary deliverable — your allocation should reflect that.",
+          "'I'll do my best' is not a plan. An Architect leader maintains a shared doc tracking every recurring task — she expects the same level of structure from you.",
+          "Asking her to decide abdicates the thinking she asked you to do. She said she wanted your recommendation — bring one."
+        ]
+      }
+    }
   },
   {
     id:11, title:"The new vendor and the loyal studio", archetypes:["Pride"],
-    situation:"A landscape architecture principal in Charleston asked her EA to onboard a new specialty plant nursery for a major Kiawah Island estate project. She gave only a contact name and a one-line note: 'I want to do this right. Take your time.' The project design phase began in three weeks.",
-    challenge:"The principal has a relational standard that takes time: she learns the vendor's story before discussing products or terms. Three weeks is not a lot of time for the relational arc she usually runs — and plant selection must happen in the first two weeks.",
-    behavior:"Warm, meticulous, and deeply loyal to her vendor network. She holds her clients' aesthetic preferences with unusual precision. She treats vendor relationships as long-term commitments and expects her EA to honor that same standard.",
-    action:"Open with a personal, unhurried email to the vendor introducing the studio and expressing genuine interest in their work and story. Do not open with a credit application or intake form. After the first exchange, schedule a brief introductory call. Only after that relational step is established, move to operational onboarding. Build a parallel track so the operational paperwork is ready to send immediately after the relationship call.",
-    learning:"A Pride leader's vendor relationships are an extension of her client relationships. The EA must honor the relational sequence — warmth first, operations second — without letting it slow the timeline. Running operational prep in parallel with the relational arc is the key to doing it right without doing it slowly.",
-    themes:"Vendor onboarding · Relational sequencing · Operational timeline · Trust-building · Studio culture"
+    situation:"A landscape architecture principal asked her EA to onboard a new specialty plant nursery for a Kiawah Island estate project. She gave a contact name and one-line note: 'I want to do this right. Take your time.' The design phase begins in three weeks.",
+    challenge:"The principal learns the vendor's story before discussing products or terms. Three weeks is not a lot of time — and plant selection must happen in the first two weeks.",
+    behavior:"Warm, meticulous, and deeply loyal to her vendor network. She treats vendor relationships as long-term commitments.",
+    action:"Open with a personal, unhurried email. Schedule an introductory call. Only then move to operational onboarding. Run the paperwork prep in parallel so it's ready to send immediately after the relationship call.",
+    learning:"A Pride leader's vendor relationships are an extension of her client relationships. Warmth first, operations second — but running both tracks in parallel keeps the timeline intact.",
+    themes:"Vendor onboarding · Relational sequencing · Operational timeline · Trust-building",
+    quiz: {
+      question: "You need the vendor onboarded in three weeks and plant selection to happen in the first two. But the principal wants the relationship built properly first. How do you manage this?",
+      options: [
+        { letter:"A", text:"Send the credit application and vendor intake form immediately so the operational side is handled while you focus on the relationship." },
+        { letter:"B", text:"Open with a warm personal email introducing the studio and expressing genuine interest in the vendor's work. Run the operational paperwork prep in parallel so it's ready to send immediately after the introductory call." },
+        { letter:"C", text:"Tell the principal that three weeks is too short to do this her way and recommend delaying plant selection until the relationship is fully established." },
+        { letter:"D", text:"Call the vendor directly to introduce yourself and move quickly to logistics given the timeline." }
+      ],
+      correct: 1,
+      feedback: {
+        correct: "Exactly right. The relational sequence is non-negotiable for this principal — but the timeline is real. The solution is to run both tracks at once: build the relationship in the foreground, prepare the paperwork in the background. When the relationship call is done, the forms are ready to go the same day.",
+        wrong: [
+          "Opening with a credit application is the opposite of what the principal asked for. She has declined vendors whose first conversation felt transactional — this would be worse.",
+          "Telling the principal her way won't work on this timeline is not your call to make. The solution is to find a way to honor both constraints, not to escalate them.",
+          "Calling rather than emailing moves too fast and skips the warm written introduction the principal's relational standard calls for. Starting with logistics on a cold call would feel transactional."
+        ]
+      }
+    }
   },
   {
     id:12, title:"The annual retreat for the foundation — multi-archetype", archetypes:["Command","Pride","Vision","Architect"],
-    situation:"A foundation EA was asked to plan a three-day all-staff retreat within a $42,000 budget, within a two-hour drive of the home office, between mid-May and early June. Four senior leaders had already begun informally inputting — all pulling in different directions before planning formally began.",
-    challenge:"Each of the four senior leaders has a different operating style, and all have already started creating facts on the ground. The EA has seven weeks and must produce a plan all four will accept without it becoming a lowest-common-denominator compromise.",
-    behavior:"The ED is decisive and expects the EA to use judgment. The CoS is relational and has gathered staff feedback. The Director of Strategy moves fast and has already picked a venue. The Director of Programs is methodical and wants the framework confirmed before the agenda is designed.",
-    action:"Gather input individually from each leader in the format they prefer — written questions to the ED and DoP, a short call with the CoS, a quick reply to the DoS acknowledging her venue suggestion and asking for two backup options. Do not coordinate them as a group yet. After gathering input, assess venues and draft a retreat structure. Present the complete draft to the ED first — she owns the decision. Incorporate her feedback before sharing with the group. Circulate the final plan for comment, not approval.",
-    learning:"In a multi-leader environment, the EA must sequence input by operating style, not by hierarchy. Collecting input individually before synthesizing avoids the dynamic where the fastest or loudest voice shapes the outcome. The ED's approval anchors the plan — everything else is input.",
-    themes:"Multi-archetype · Retreat planning · Multi-stakeholder management · Input sequencing · Decision authority · Budget management"
+    situation:"A foundation EA was asked to plan a three-day all-staff retreat within a $42,000 budget, within two hours of the home office, between mid-May and early June. Four senior leaders had already started pulling in different directions before planning formally began.",
+    challenge:"Each of the four senior leaders has a different operating style and all have already created facts on the ground. The EA has seven weeks.",
+    behavior:"The ED is decisive. The CoS is relational and has gathered staff feedback. The Director of Strategy has already picked a venue. The Director of Programs wants the framework confirmed before any agenda work.",
+    action:"Gather input individually from each leader in the format they prefer. Do not coordinate them as a group yet. Present the complete draft to the ED first — she owns the decision. Circulate the final plan for comment, not approval.",
+    learning:"In a multi-leader environment, sequence input by operating style, not by hierarchy. The ED's approval anchors the plan — everything else is input.",
+    themes:"Multi-archetype · Retreat planning · Multi-stakeholder management · Input sequencing · Decision authority",
+    quiz: {
+      question: "The Director of Strategy has already sent a venue link and clearly expects it to be used. The Director of Programs hasn't weighed in yet and wants the agenda framework confirmed first. How do you handle this?",
+      options: [
+        { letter:"A", text:"Use the Director of Strategy's venue — she has already done the research and it saves you time. Confirm it with the group." },
+        { letter:"B", text:"Send the venue link to the full group for input and let consensus decide." },
+        { letter:"C", text:"Acknowledge the Director of Strategy's venue suggestion, ask for two backup options, and get the Director of Programs' framework input before presenting any venue to the ED for a decision." },
+        { letter:"D", text:"Ask the ED to mediate between the two directors before you proceed." }
+      ],
+      correct: 2,
+      feedback: {
+        correct: "Right. The Director of Strategy has created a fact on the ground — you acknowledge it without committing to it. Asking for backup options keeps your options open without dismissing her. Getting the Director of Programs' framework input first respects how she works. The ED makes the final call — not the group, and not the fastest voice.",
+        wrong: [
+          "Using the Director of Strategy's venue without vetting it against the budget, geography, and other input sources hands her the decision. She's one of four stakeholders — not the decision-maker.",
+          "Sending the venue to the full group for consensus hands the decision to whoever responds most forcefully. You lose control of the process and likely end up with a lowest-common-denominator outcome.",
+          "Asking the ED to mediate before you've even gathered input adds unnecessary escalation. Your job is to sequence the input gathering so that conflict doesn't arise — not to surface it to leadership prematurely."
+        ]
+      }
+    }
   }
 ];
 
 const tagClass = { Vision:'tag-vis', Command:'tag-cmd', Architect:'tag-arc', Pride:'tag-pri' };
-const steps = [
+const libSteps = [
   { key:'challenge', nav:'The challenge', label:'The challenge' },
   { key:'behavior',  nav:'Leader behavior', label:'Leader behavior' },
   { key:'action',    nav:'Recommended action', label:'Recommended action' },
   { key:'learning',  nav:'The learning', label:'The learning' }
 ];
-let current = null, currentStep = 0, activeFilter = 'all';
+let libCurrent = null, libStep = 0, activeFilter = 'all';
+let quizScenario = null, quizQIdx = 0, quizAnswers = [];
 
 function tagHTML(a) { return `<span class="tag ${tagClass[a]}">${a}</span>`; }
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
+/* ── Tab switching ── */
+function switchTab(t) {
+  document.getElementById('tab-library-content').style.display = t==='library' ? 'block' : 'none';
+  document.getElementById('tab-quiz-content').style.display    = t==='quiz'    ? 'block' : 'none';
+  document.getElementById('tab-library').classList.toggle('active', t==='library');
+  document.getElementById('tab-quiz').classList.toggle('active', t==='quiz');
+}
+
+/* ── Library ── */
 function renderCards() {
-  const filtered = activeFilter === 'all' ? scenarios : scenarios.filter(s => s.archetypes.includes(activeFilter));
+  const filtered = activeFilter==='all' ? scenarios : scenarios.filter(s=>s.archetypes.includes(activeFilter));
   document.getElementById('cnt').textContent = `(${scenarios.length})`;
-  document.getElementById('card-grid').innerHTML = filtered.map(s => `
+  document.getElementById('card-grid').innerHTML = filtered.map(s=>`
     <div class="card" onclick="openScenario(${s.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openScenario(${s.id})">
       <div class="card-top">
         <div class="card-title">${cap(s.title)}</div>
@@ -324,68 +685,150 @@ function renderCards() {
     </div>`).join('');
 }
 
-function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-
 function filter(btn, type) {
   activeFilter = type;
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.className = 'filter-btn';
-  });
-  const map = { all:'active-all', Vision:'active-vis', Command:'active-cmd', Architect:'active-arc', Pride:'active-pri' };
-  btn.classList.add(map[type]);
+  document.querySelectorAll('.filter-btn').forEach(b => b.className='filter-btn');
+  const m = {all:'active-all',Vision:'active-vis',Command:'active-cmd',Architect:'active-arc',Pride:'active-pri'};
+  btn.classList.add(m[type]);
   renderCards();
 }
 
 function openScenario(id) {
-  current = scenarios.find(s => s.id === id);
-  currentStep = 0;
+  libCurrent = scenarios.find(s=>s.id===id);
+  libStep = 0;
   document.getElementById('list-view').style.display = 'none';
-  const sv = document.getElementById('scenario-view');
-  sv.classList.add('open');
-  document.getElementById('sv-title').textContent = cap(current.title);
-  document.getElementById('sv-tags').innerHTML = current.archetypes.map(tagHTML).join('');
-  document.getElementById('sv-situation').textContent = current.situation;
-  document.getElementById('step-nav').innerHTML = steps.map((s,i) =>
-    `<div class="step-nav-item${i===0?' active':''}" id="nav-${i}" onclick="goStep(${i})">${s.nav}</div>`
-  ).join('');
-  renderStep();
+  document.getElementById('scenario-view').classList.add('open');
+  document.getElementById('sv-title').textContent = cap(libCurrent.title);
+  document.getElementById('sv-tags').innerHTML = libCurrent.archetypes.map(tagHTML).join('');
+  document.getElementById('sv-situation').textContent = libCurrent.situation;
+  document.getElementById('step-nav').innerHTML = libSteps.map((s,i)=>
+    `<div class="step-nav-item${i===0?' active':''}" id="nav-${i}" onclick="goStep(${i})">${s.nav}</div>`).join('');
+  renderLibStep();
   window.scrollTo(0,0);
 }
 
 function closeScenario() {
   document.getElementById('list-view').style.display = 'block';
   document.getElementById('scenario-view').classList.remove('open');
-  current = null;
+  libCurrent = null;
   window.scrollTo(0,0);
 }
 
-function renderStep() {
-  const s = steps[currentStep];
-  const isLast = currentStep === steps.length - 1;
+function renderLibStep() {
+  const s = libSteps[libStep];
+  const isLast = libStep === libSteps.length - 1;
   document.getElementById('step-content').innerHTML = `
     <p class="step-label">${s.label}</p>
-    <p class="step-body">${current[s.key]}</p>
-  `;
-  steps.forEach((_,i) => {
-    const el = document.getElementById('nav-'+i);
-    if(el) el.classList.toggle('active', i===currentStep);
-  });
-  document.getElementById('progress-label').textContent = `${currentStep+1} of ${steps.length}`;
-  const prev = document.getElementById('prev-btn');
+    <p class="step-body">${libCurrent[s.key]}</p>`;
+  libSteps.forEach((_,i)=>{ const el=document.getElementById('nav-'+i); if(el) el.classList.toggle('active',i===libStep); });
+  document.getElementById('progress-label').textContent = `${libStep+1} of ${libSteps.length}`;
+  document.getElementById('prev-btn').disabled = libStep === 0;
   const next = document.getElementById('next-btn');
-  prev.disabled = currentStep === 0;
-  if(isLast) {
-    next.textContent = 'Back to library';
-    next.onclick = closeScenario;
-  } else {
-    next.innerHTML = 'Next &rarr;';
-    next.onclick = nextStep;
-  }
+  if(isLast) { next.innerHTML='Back to library'; next.onclick=closeScenario; }
+  else { next.innerHTML='Next &rarr;'; next.onclick=nextStep; }
 }
 
-function goStep(i) { currentStep = i; renderStep(); }
-function nextStep() { if(currentStep < steps.length-1) { currentStep++; renderStep(); } }
-function prevStep() { if(currentStep > 0) { currentStep--; renderStep(); } }
+function goStep(i) { libStep=i; renderLibStep(); }
+function nextStep() { if(libStep<libSteps.length-1){libStep++;renderLibStep();} }
+function prevStep() { if(libStep>0){libStep--;renderLibStep();} }
+
+/* ── Quiz ── */
+(function buildSelect(){
+  const sel = document.getElementById('quiz-select');
+  scenarios.forEach(s=>{
+    const o = document.createElement('option');
+    o.value = s.id;
+    o.textContent = cap(s.title);
+    sel.appendChild(o);
+  });
+})();
+
+function loadQuiz(id) {
+  if(!id) { document.getElementById('quiz-area').style.display='none'; return; }
+  quizScenario = scenarios.find(s=>s.id==id);
+  quizQIdx = 0;
+  quizAnswers = [];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'block';
+  document.getElementById('quiz-score').style.display = 'none';
+  renderQuestion();
+  window.scrollTo(0,0);
+}
+
+function renderQuestion() {
+  const q = quizScenario.quiz;
+  document.getElementById('q-tags').innerHTML = quizScenario.archetypes.map(tagHTML).join('');
+  document.getElementById('q-title').textContent = cap(quizScenario.title);
+  document.getElementById('q-situation').textContent = quizScenario.situation;
+  document.getElementById('q-question').textContent = q.question;
+  document.getElementById('q-progress').textContent = `Question 1 of 1`;
+  document.getElementById('q-feedback').style.display = 'none';
+  document.getElementById('q-next-btn').style.display = 'none';
+  document.getElementById('q-options').innerHTML = q.options.map((o,i)=>`
+    <button class="option" id="opt-${i}" onclick="selectOption(${i})">
+      <div class="option-letter">${o.letter}</div>
+      <div class="option-text">${o.text}</div>
+    </button>`).join('');
+}
+
+function selectOption(idx) {
+  const q = quizScenario.quiz;
+  const isCorrect = idx === q.correct;
+  quizAnswers.push({ idx, correct: isCorrect });
+
+  document.querySelectorAll('.option').forEach((el,i) => {
+    el.disabled = true;
+    if(i === q.correct) el.classList.add(isCorrect && i===idx ? 'correct' : 'reveal-correct');
+    if(i === idx && !isCorrect) el.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  fb.style.display = 'block';
+  fb.className = 'feedback-box ' + (isCorrect ? 'correct' : 'wrong');
+
+  let explanation;
+  if(isCorrect) {
+    explanation = q.feedback.correct;
+  } else {
+    explanation = q.feedback.wrong[idx < q.correct ? idx : idx - 1] || q.feedback.wrong[0];
+  }
+  fb.innerHTML = `<strong>${isCorrect ? 'Correct' : 'Not quite'}</strong>${explanation}`;
+
+  const nextBtn = document.getElementById('q-next-btn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = 'See result';
+  nextBtn.onclick = showScore;
+}
+
+function nextQuestion() { quizQIdx++; renderQuestion(); }
+
+function showScore() {
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-score').style.display = 'block';
+  const total = quizAnswers.length;
+  const correct = quizAnswers.filter(a=>a.correct).length;
+  const pct = Math.round((correct/total)*100);
+  const circle = document.getElementById('sc-circle');
+  circle.textContent = `${pct}%`;
+  circle.className = 'score-circle ' + (pct>=80?'great':pct>=50?'ok':'low');
+  document.getElementById('sc-title').textContent = pct===100 ? 'Perfect read' : pct>=80 ? 'Strong judgment' : pct>=50 ? 'Getting there' : 'Keep practicing';
+  document.getElementById('sc-subtitle').textContent = `${correct} of ${total} correct for "${cap(quizScenario.title)}"`;
+  const q = quizScenario.quiz;
+  document.getElementById('sc-breakdown').innerHTML = quizAnswers.map((a,i)=>`
+    <div class="score-row">
+      <div class="score-row-q">${q.question}</div>
+      <div class="score-row-result ${a.correct?'c':'w'}">${a.correct?'Correct':'Incorrect'}</div>
+    </div>`).join('');
+  window.scrollTo(0,0);
+}
+
+function retryQuiz() {
+  quizQIdx = 0;
+  quizAnswers = [];
+  document.getElementById('quiz-active').style.display = 'block';
+  document.getElementById('quiz-score').style.display = 'none';
+  renderQuestion();
+}
 
 renderCards();
 </script>

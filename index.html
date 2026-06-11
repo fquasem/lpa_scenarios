@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LPA Scenario Library — LION Method</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --bg-tertiary: #f0ede8;
+    --text-primary: #1a1a18;
+    --text-secondary: #5a5a56;
+    --text-tertiary: #8a8a84;
+    --border: rgba(0,0,0,0.12);
+    --border-hover: rgba(0,0,0,0.25);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  body {
+    font-family: var(--font);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+  .page { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* Header */
+  .site-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border); }
+  .logo { font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-tertiary); text-transform: uppercase; }
+  .logo span { color: var(--text-primary); }
+
+  /* Library view */
+  .lib-header { margin-bottom: 1.5rem; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+  h1 { font-size: 26px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .subtitle { font-size: 15px; color: var(--text-secondary); }
+
+  /* Filters */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .filter-btn {
+    font-size: 13px; padding: 6px 16px; border-radius: 20px;
+    border: 0.5px solid var(--border); background: var(--bg);
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+    font-family: var(--font);
+  }
+  .filter-btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+  .filter-btn.active-all { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-hover); }
+  .filter-btn.active-vis { background: #EEEDFE; color: #3C3489; border-color: transparent; }
+  .filter-btn.active-cmd { background: #E6F1FB; color: #0C447C; border-color: transparent; }
+  .filter-btn.active-arc { background: #E1F5EE; color: #085041; border-color: transparent; }
+  .filter-btn.active-pri { background: #FAEEDA; color: #633806; border-color: transparent; }
+
+  /* Card grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .card {
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1rem 1.25rem;
+    cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: var(--border-hover); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .card-title { font-size: 14px; font-weight: 500; color: var(--text-primary); line-height: 1.4; }
+  .archetype-tags { display: flex; gap: 4px; flex-wrap: wrap; flex-shrink: 0; }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 500; white-space: nowrap; }
+  .tag-vis { background: #EEEDFE; color: #3C3489; }
+  .tag-cmd { background: #E6F1FB; color: #0C447C; }
+  .tag-arc { background: #E1F5EE; color: #085041; }
+  .tag-pri { background: #FAEEDA; color: #633806; }
+  .card-challenge { font-size: 13px; color: var(--text-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-footer { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .card-themes { font-size: 11px; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+  .start-link { font-size: 12px; color: #3C3489; font-weight: 500; white-space: nowrap; }
+
+  /* Scenario view */
+  .scenario-view { display: none; }
+  .scenario-view.open { display: block; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-secondary); cursor: pointer;
+    margin-bottom: 1.25rem; background: none; border: none;
+    font-family: var(--font); padding: 0;
+  }
+  .back-btn:hover { color: var(--text-primary); }
+  .scenario-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .scenario-hero { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid var(--border); }
+  .scenario-title { font-size: 18px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
+  .scenario-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .scenario-situation { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* Step layout */
+  .steps { display: flex; min-height: 320px; }
+  .step-nav { width: 150px; flex-shrink: 0; border-right: 0.5px solid var(--border); }
+  .step-nav-item {
+    padding: 14px 16px; font-size: 13px; color: var(--text-secondary);
+    cursor: pointer; border-left: 2px solid transparent; line-height: 1.3;
+    transition: background 0.1s;
+  }
+  .step-nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .step-nav-item.active { color: #3C3489; border-left-color: #7F77DD; background: #EEEDFE; font-weight: 500; }
+  .step-content { flex: 1; padding: 1.25rem 1.5rem; min-width: 0; }
+  .step-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 6px; }
+  .step-body { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* Footer nav */
+  .step-footer {
+    padding: 1rem 1.5rem; border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg-secondary);
+  }
+  .nav-btn {
+    font-size: 13px; padding: 7px 18px; border-radius: var(--radius-md);
+    border: 0.5px solid var(--border); background: var(--bg);
+    color: var(--text-primary); cursor: pointer; font-family: var(--font);
+    transition: background 0.12s;
+  }
+  .nav-btn:hover { background: var(--bg-secondary); }
+  .nav-btn.primary { background: #534AB7; border-color: #534AB7; color: #EEEDFE; }
+  .nav-btn.primary:hover { background: #3C3489; }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+  .progress { font-size: 12px; color: var(--text-tertiary); }
+
+  /* Completion */
+  .completion { text-align: center; padding: 2.5rem 1.5rem; }
+  .completion-icon { font-size: 32px; margin-bottom: 12px; }
+  .completion h2 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .completion p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+  .themes-pill-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 1.5rem; }
+  .theme-pill { font-size: 12px; padding: 4px 10px; border-radius: 10px; background: var(--bg-secondary); color: var(--text-secondary); }
+
+  @media (max-width: 600px) {
+    .steps { flex-direction: column; }
+    .step-nav { width: 100%; border-right: none; border-bottom: 0.5px solid var(--border); display: flex; overflow-x: auto; }
+    .step-nav-item { border-left: none; border-bottom: 2px solid transparent; white-space: nowrap; padding: 10px 14px; }
+    .step-nav-item.active { border-left-color: transparent; border-bottom-color: #7F77DD; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <div class="logo"><span>LionsPride Associates</span> — LION Method</div>
+  </header>
+
+  <!-- Library view -->
+  <div id="list-view">
+    <div class="lib-header">
+      <p class="eyebrow">Scenario library</p>
+      <h1>Real situations. Practice how you'd respond.</h1>
+      <p class="subtitle">Each scenario is drawn from real leadership engagements. Work through the challenge, understand the leader's behavior, and learn the right approach.</p>
+    </div>
+    <div class="filters" id="filters">
+      <button class="filter-btn active-all" data-filter="all" onclick="filter(this,'all')">All <span id="cnt"></span></button>
+      <button class="filter-btn" data-filter="Vision" onclick="filter(this,'Vision')">Vision</button>
+      <button class="filter-btn" data-filter="Command" onclick="filter(this,'Command')">Command</button>
+      <button class="filter-btn" data-filter="Architect" onclick="filter(this,'Architect')">Architect</button>
+      <button class="filter-btn" data-filter="Pride" onclick="filter(this,'Pride')">Pride</button>
+    </div>
+    <div class="grid" id="card-grid"></div>
+  </div>
+
+  <!-- Scenario view -->
+  <div class="scenario-view" id="scenario-view">
+    <button class="back-btn" onclick="closeScenario()">&#8592; Back to library</button>
+    <div class="scenario-card">
+      <div class="scenario-hero">
+        <div class="scenario-tags" id="sv-tags"></div>
+        <div class="scenario-title" id="sv-title"></div>
+        <div class="scenario-situation" id="sv-situation"></div>
+      </div>
+      <div class="steps">
+        <div class="step-nav" id="step-nav"></div>
+        <div class="step-content" id="step-content"></div>
+      </div>
+      <div class="step-footer">
+        <button class="nav-btn" id="prev-btn" onclick="prevStep()">&#8592; Previous</button>
+        <span class="progress" id="progress-label"></span>
+        <button class="nav-btn primary" id="next-btn" onclick="nextStep()">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const scenarios = [
+  {
+    id:1, title:"The solo practitioner — conference keynote decision", archetypes:["Vision"],
+    situation:"A solo physical therapist with a growing practice received a keynote invitation six weeks out. She left a voice memo: 'I think we should do this. Figure it out.' — while a critical clinical appointment that Friday couldn't easily move.",
+    challenge:"The leader had likely already verbally committed before the EA knew the invitation existed — a pattern that had happened twice before. The EA had to either make the conflict work or clean it up gracefully, without knowing the full state of the commitment.",
+    behavior:"She is magnetic and opportunity-driven. She communicates via voice memo, avoids saying no in person, and relies on her EA to manage the fallout from impulse commitments. She has expressed ambition for a major stage by year-end.",
+    action:"Audit the clinical schedule for Friday flexibility. Contact the conference organizers to understand logistics and whether she has formally confirmed. Explore a Thursday travel option. Present two clear paths to the leader: a way to make it work, and a graceful exit script if it cannot. Do not ask an open-ended question — bring a decision.",
+    learning:"A Vision leader does not wait for clarity — they create options and present decisions. Protecting the leader from the consequences of her own impulse requires proactive triage, not reactive execution. The clinical relationship and the speaking opportunity both matter; the EA's job is to find out which matters more right now and act accordingly.",
+    themes:"Impulse-driven commitments · Calendar protection · Clinical continuity · Proactive decision-making"
+  },
+  {
+    id:2, title:"The solo practitioner — building the working rhythm", archetypes:["Vision"],
+    situation:"After 90 days as the EA to a solo physical therapist, the EA had observed clear behavioral patterns but had no formal playbook. The leader had said 'I'm a lot. You'll figure it out.' The EA needed to design a working relationship plan and present it in a format the leader would actually engage with.",
+    challenge:"The leader does not read documents. She responds to voice memos and short videos. A traditional memo would not land. The EA had to design the working relationship itself — and then present it in the right medium — without being told to do either.",
+    behavior:"Warm, generous, and idea-driven but not operationally oriented. She gives no negative feedback and no manual. She hints that she wants more from the EA without specifying what. Her senior staff have learned to read her over years.",
+    action:"Design a plan covering: how meetings will run, how ideas will be captured and triaged, how calendar commitments will be managed before they are verbalized externally, how the EA will coordinate with senior staff, and what the EA will stop doing reactively. Present as a short Loom-style video or 90-second voice memo with a one-page visual backup — not a written memo.",
+    learning:"A Vision leader will not engage with a plan in a format that does not match how she thinks. The EA's job is not just to design the right working system — it is to deliver it in the right medium. Matching communication format to leader type is as important as the content itself.",
+    themes:"Communication format matching · Working rhythm design · Proactive relationship management · 90-day planning"
+  },
+  {
+    id:3, title:"The 28-minute meeting", archetypes:["Command"],
+    situation:"A newly appointed interim executive director restructured the weekly EA check-in from 60 minutes to 28 and sent a clear agenda format in advance: decisions needed, calendar urgencies, blockers only. The EA had nine items from the prior week.",
+    challenge:"The prior ED used the meeting to think out loud and build relational context. The new leader has no tolerance for drift. Nine items cannot all fit in 28 minutes — and some items do not fit the new agenda format at all.",
+    behavior:"Direct, brisk, and decisive. She reads everything before she arrives. She restructured meetings in her first months and stopped attending anything that could be handled over email. She is warm but surgically protective of time.",
+    action:"Build a tight written agenda with only 3 items maximum: the most pressing decision needed, one calendar item, one blocker. Send it the evening before. Handle donor follow-ups and board relationship signals in a separate asynchronous brief. Surface the team morale observation in a short written note flagged 'FYI, no action needed now.' Do not try to fit everything into 28 minutes.",
+    learning:"A Command leader tells you exactly how she wants to be supported. The EA's job is to execute that format precisely — not to find workarounds that serve the EA's need for face time. Items that do not fit the format go elsewhere. The meeting is for decisions, not for relationship maintenance.",
+    themes:"Agenda design · Meeting discipline · Asynchronous communication · Format compliance · Triage under constraint"
+  },
+  {
+    id:4, title:"The brilliant assistant filling the wrong gaps", archetypes:["Vision","Architect"],
+    situation:"A Latina nonprofit founder hired an excellent EA six months prior. The EA was building systems the founder could not and would not use — optimizing SharePoint she refused to open, creating project plans for ideas she had already moved past. The founder did not feel supported despite the EA being objectively competent.",
+    challenge:"The EA was doing real work — just not the right work. The founder cannot engage with tools that do not match how she thinks. The coach has to deliver a real diagnosis without blaming the EA or the founder.",
+    behavior:"Warm, idea-driven, and self-aware about her own operational style. She told the coach she sometimes needs to be 'handheld through operational decisions.' She generates ideas faster than her team can execute. She is exhausted and somewhat fragile.",
+    action:"Diagnose clearly: the EA is supporting the organization's systems rather than the founder's brain. Reframe the role — the EA's job is to be the founder's operating partner, not the organization's system builder. Propose a reset: a two-week listening period where the EA shadows the founder and identifies what she actually needs in real time. Do not blame the EA. Present a path that keeps the EA and makes her useful.",
+    learning:"A Vision leader with Architect tendencies needs an EA who supports how she actually thinks — not how a system says she should think. Operational support must be designed around the leader's real workflow, not the org's ideal workflow. Filling the wrong gaps is not the EA's fault when no one defined the right gaps.",
+    themes:"Vision/Architect hybrid · Role definition · Support misalignment · Founder operating style · System rejection"
+  },
+  {
+    id:5, title:"Board meeting notes with a member politics problem", archetypes:["Pride"],
+    situation:"An association ED asked her EA to take minutes at a heated board meeting where a member pushed twice for a vote on a politically charged bill. No vote was taken; the item was tabled 7-2. The ED told the EA beforehand: 'I want the minutes to reflect that we discussed the bill, but I don't want the disagreement immortalized.'",
+    challenge:"The EA must write legally accurate minutes while honoring the ED's request. The two dissenting voters — including the member who pushed hardest — will read those minutes and look for whether their position is reflected.",
+    behavior:"Warm, deeply networked, and conflict-averse. She believes most conflict resolves through patient one-on-one conversations. She has been known to pull agenda items the day before a meeting if the room is not ready. She trusts her EA to navigate this carefully.",
+    action:"Write minutes that accurately capture: the motion to table, the 7-2 vote, and the fact that a discussion occurred. Do not include back-and-forth debate, individual member arguments, or the number of times the principal pushed for a vote. Use neutral, procedural language. If asked by a board member why more detail was not included, refer to the bylaws and the chapter's standard minutes format.",
+    learning:"A Pride leader manages relationships with long time horizons. Her request is not to falsify the record — it is to keep the official record from becoming a weapon in an ongoing conflict. The EA's job is to be accurate and procedural without being inflammatory. Minutes are a legal document, not a transcript.",
+    themes:"Board governance · Minutes writing · Political sensitivity · Relationship management · Procedural accuracy"
+  },
+  {
+    id:6, title:"One leader, four organizations, one inbox", archetypes:["Vision"],
+    situation:"A Houston serial founder running four simultaneous organizations asked his EA to 'handle the urgent stuff' before he landed from a flight. His inbox had 90 unread messages from the weekend spanning all four organizations. He gave no definition of urgent.",
+    challenge:"No charge-back system exists between the organizations. Some emails cannot be clearly attributed to one entity. The leader forwards everything with no context and disappears for days. He has not defined urgent. The EA has 90 minutes and cannot reach him.",
+    behavior:"Generous, magnetic, and deeply relational. He commits to things in the moment, sends voice memos at midnight, and thinks out loud across all four entities simultaneously. He never met a meeting he didn't want to lengthen.",
+    action:"Triage by risk, not by sender. Escalate: the journalist request (who is she asking to speak as?) and the board governance question (structural risk). Handle: the board member voicemail. Defer: the documentary distribution question, the personal pastor request. Flag for landing: the two donor follow-ups and the conference keynote. Do not draft responses on items where the organizational entity is unclear.",
+    learning:"A Vision leader operating across multiple entities needs an EA who can hold organizational boundaries the leader himself does not maintain. Triage is not about importance — it is about risk and clarity. When the entity is unclear, the EA flags rather than acts.",
+    themes:"Multi-entity triage · Inbox management · Organizational boundary-holding · Risk-based prioritization · Undefined urgency"
+  },
+  {
+    id:7, title:"The grant submission that makes or breaks the quarter", archetypes:["Architect","Command"],
+    situation:"A hardware startup's technical co-founder needed a federal grant submitted by Friday at 5 p.m. The EA had never coordinated a grant submission. The previous EA's files were partly organized and partly in an archived inbox. The portal registration had expired. Three letters of support were in various states of readiness. The budget did not yet exist.",
+    challenge:"The leader communicates in written specifications and responds to everything with 3-5 clarifying questions before saying yes. The portal is in the previous EA's name. The highest-risk letter is held up by a slow legal team.",
+    behavior:"Precise, technical, and quietly intense. He sent a detailed written note on Sunday assigning clear ownership. He trusts written process over conversation. He does not skip clarifying questions. He is under significant pressure but does not externalize it emotionally.",
+    action:"Build a day-by-day plan: Monday — contact the federal portal help desk to begin re-registration, identify who can write the program officer letter, confirm partner legal team status and set a Tuesday deadline. Tuesday — draft the budget framework for leader review. Wednesday — deliver complete budget draft for leader review, confirm all three letters are in motion. Thursday — assemble final package, final review. Present this plan to the leader in writing with specific questions only where his input is required.",
+    learning:"An Architect/Command leader does not want reassurance — he wants a written plan with clear accountability. The EA's job is to build the operational structure the leader would have built himself if he had time. Every communication should be in writing, specific, and action-oriented.",
+    themes:"Grant coordination · Deadline management · Written communication · Operational planning under pressure · First-time task ownership"
+  },
+  {
+    id:8, title:"The executive who replies in two words — the 12:30 call", archetypes:["Command"],
+    situation:"A senior logistics software executive was driving to a Fortune 100 customer meeting when a 12:30 call appeared on his calendar — a contract renewal from a different major account. He texted his EA at 7:51 a.m.: '12:30 call. Get me ready.' He would be unreachable from 10 a.m. to noon.",
+    challenge:"The EA had 57 minutes before losing him. The prep had to be delivered in a 25-minute window by text. A careful re-read of the email chain revealed the customer was reconsidering the scope of the contract.",
+    behavior:"Direct, fast, and unsentimental. He texts, not calls. He reads two-line summaries, not five-bullet updates. He has expanded the EA's scope twice without commentary and has never given direct feedback.",
+    action:"Use the 57 minutes to pull: the contract value, the prior QBR notes, the two open issues (pricing concern and product feature complaint), and the email chain showing scope reconsideration. Synthesize into a 4-line text brief. Deliver it at 12:05 by text — not before noon. Do not call. Do not send a document. Do not include context he does not need.",
+    learning:"A Command leader does not want a briefing document — he wants the four things he needs to walk into a room. The EA's job is to read the signals he missed and surface only what matters, in the format he uses, at the moment he can act on it.",
+    themes:"Executive prep · Compressed timeline · Text-based communication · Signal recognition · Client risk identification"
+  },
+  {
+    id:9, title:"The executive who replies in two words — five things at once", archetypes:["Command"],
+    situation:"The same logistics executive was in back-to-back meetings until 4:15. His EA had five simultaneous items: a board report due at 5 p.m., a sensitive partner scheduling request, an RSVPs spreadsheet behind, an HR escalation with outside counsel, and a communications crisis with a trade press reporter.",
+    challenge:"Two items carried real organizational risk. One had a hard external deadline. One involved a partner relationship only the leader maintained. The leader had given partial direction but said nothing about the HR matter or the board report deadline.",
+    behavior:"He has said explicitly: if a lawyer or PR firm needs to see something, they see it before he responds. He routes sensitive matters to counsel and comms immediately and has given the EA a clear framework for handling legal and PR exposure.",
+    action:"In the next 2.5 hours: (1) Route the HR email to outside counsel immediately — do not draft a response, do not wait for him. (2) Flag the comms situation to the PR firm so they have lead time before his 4:30. (3) Assemble the board report — the only item with a hard deadline. (4) Send a short note to the partner with two available windows. (5) Forward the board member's cohort analysis request. Escalate to him before 4:15: the HR matter and the board report status.",
+    learning:"A Command leader gives standing instructions for a reason. The EA's job is to execute those instructions without waiting for case-by-case confirmation. When items carry legal or reputational risk, they go to the right people immediately — not into the holding queue.",
+    themes:"Multi-priority triage · Legal escalation · PR coordination · Board reporting · Standing instructions · Risk routing"
+  },
+  {
+    id:10, title:"Four and a half hours a week and a successor on the way", archetypes:["Architect"],
+    situation:"An interim executive director of a small national nonprofit asked her EA — allocated at only 4.5 hours per week — to recommend how to split time between running operational support and documenting administrative procedures for her successor. She wanted the EA's thinking by Friday.",
+    challenge:"4.5 hours is genuinely tight for both tracks. If documentation crowds out operations, the calendar slips. If operations crowds out documentation, the successor inherits an organization held together by one person's memory.",
+    behavior:"Precise, systems-oriented, and acutely aware she is interim. She maintains a shared document tracking every recurring task and which ones need an SOP. She frames her primary deliverable as the system her successor inherits, not the work she does this year.",
+    action:"Propose a 60/40 split: 2.7 hours on operations, 1.8 hours on documentation. Prioritize documentation in this order: (1) calendar management protocol, (2) board meeting prep checklist, (3) donor acknowledgment cadence. Present the proposal in writing with a one-paragraph rationale per priority. Flag the tradeoff explicitly. Ask her to confirm the allocation before Friday.",
+    learning:"An Architect leader wants the EA to show their reasoning, not just their answer. Presenting a clear tradeoff with a rationale — rather than just a recommendation — earns trust with this leader type. The EA's job is to make the constraint visible, not to pretend it does not exist.",
+    themes:"Time allocation · Succession planning · Documentation priority · Tradeoff communication · Interim leadership support"
+  },
+  {
+    id:11, title:"The new vendor and the loyal studio", archetypes:["Pride"],
+    situation:"A landscape architecture principal in Charleston asked her EA to onboard a new specialty plant nursery for a major Kiawah Island estate project. She gave only a contact name and a one-line note: 'I want to do this right. Take your time.' The project design phase began in three weeks.",
+    challenge:"The principal has a relational standard that takes time: she learns the vendor's story before discussing products or terms. Three weeks is not a lot of time for the relational arc she usually runs — and plant selection must happen in the first two weeks.",
+    behavior:"Warm, meticulous, and deeply loyal to her vendor network. She holds her clients' aesthetic preferences with unusual precision. She treats vendor relationships as long-term commitments and expects her EA to honor that same standard.",
+    action:"Open with a personal, unhurried email to the vendor introducing the studio and expressing genuine interest in their work and story. Do not open with a credit application or intake form. After the first exchange, schedule a brief introductory call. Only after that relational step is established, move to operational onboarding. Build a parallel track so the operational paperwork is ready to send immediately after the relationship call.",
+    learning:"A Pride leader's vendor relationships are an extension of her client relationships. The EA must honor the relational sequence — warmth first, operations second — without letting it slow the timeline. Running operational prep in parallel with the relational arc is the key to doing it right without doing it slowly.",
+    themes:"Vendor onboarding · Relational sequencing · Operational timeline · Trust-building · Studio culture"
+  },
+  {
+    id:12, title:"The annual retreat for the foundation — multi-archetype", archetypes:["Command","Pride","Vision","Architect"],
+    situation:"A foundation EA was asked to plan a three-day all-staff retreat within a $42,000 budget, within a two-hour drive of the home office, between mid-May and early June. Four senior leaders had already begun informally inputting — all pulling in different directions before planning formally began.",
+    challenge:"Each of the four senior leaders has a different operating style, and all have already started creating facts on the ground. The EA has seven weeks and must produce a plan all four will accept without it becoming a lowest-common-denominator compromise.",
+    behavior:"The ED is decisive and expects the EA to use judgment. The CoS is relational and has gathered staff feedback. The Director of Strategy moves fast and has already picked a venue. The Director of Programs is methodical and wants the framework confirmed before the agenda is designed.",
+    action:"Gather input individually from each leader in the format they prefer — written questions to the ED and DoP, a short call with the CoS, a quick reply to the DoS acknowledging her venue suggestion and asking for two backup options. Do not coordinate them as a group yet. After gathering input, assess venues and draft a retreat structure. Present the complete draft to the ED first — she owns the decision. Incorporate her feedback before sharing with the group. Circulate the final plan for comment, not approval.",
+    learning:"In a multi-leader environment, the EA must sequence input by operating style, not by hierarchy. Collecting input individually before synthesizing avoids the dynamic where the fastest or loudest voice shapes the outcome. The ED's approval anchors the plan — everything else is input.",
+    themes:"Multi-archetype · Retreat planning · Multi-stakeholder management · Input sequencing · Decision authority · Budget management"
+  }
+];
+
+const tagClass = { Vision:'tag-vis', Command:'tag-cmd', Architect:'tag-arc', Pride:'tag-pri' };
+const steps = [
+  { key:'challenge', nav:'The challenge', label:'The challenge' },
+  { key:'behavior',  nav:'Leader behavior', label:'Leader behavior' },
+  { key:'action',    nav:'Recommended action', label:'Recommended action' },
+  { key:'learning',  nav:'The learning', label:'The learning' }
+];
+let current = null, currentStep = 0, activeFilter = 'all';
+
+function tagHTML(a) { return `<span class="tag ${tagClass[a]}">${a}</span>`; }
+
+function renderCards() {
+  const filtered = activeFilter === 'all' ? scenarios : scenarios.filter(s => s.archetypes.includes(activeFilter));
+  document.getElementById('cnt').textContent = `(${scenarios.length})`;
+  document.getElementById('card-grid').innerHTML = filtered.map(s => `
+    <div class="card" onclick="openScenario(${s.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openScenario(${s.id})">
+      <div class="card-top">
+        <div class="card-title">${cap(s.title)}</div>
+        <div class="archetype-tags">${s.archetypes.map(tagHTML).join('')}</div>
+      </div>
+      <div class="card-challenge">${s.challenge}</div>
+      <div class="card-footer">
+        <div class="card-themes">${s.themes}</div>
+        <div class="start-link">Start &rarr;</div>
+      </div>
+    </div>`).join('');
+}
+
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function filter(btn, type) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+  });
+  const map = { all:'active-all', Vision:'active-vis', Command:'active-cmd', Architect:'active-arc', Pride:'active-pri' };
+  btn.classList.add(map[type]);
+  renderCards();
+}
+
+function openScenario(id) {
+  current = scenarios.find(s => s.id === id);
+  currentStep = 0;
+  document.getElementById('list-view').style.display = 'none';
+  const sv = document.getElementById('scenario-view');
+  sv.classList.add('open');
+  document.getElementById('sv-title').textContent = cap(current.title);
+  document.getElementById('sv-tags').innerHTML = current.archetypes.map(tagHTML).join('');
+  document.getElementById('sv-situation').textContent = current.situation;
+  document.getElementById('step-nav').innerHTML = steps.map((s,i) =>
+    `<div class="step-nav-item${i===0?' active':''}" id="nav-${i}" onclick="goStep(${i})">${s.nav}</div>`
+  ).join('');
+  renderStep();
+  window.scrollTo(0,0);
+}
+
+function closeScenario() {
+  document.getElementById('list-view').style.display = 'block';
+  document.getElementById('scenario-view').classList.remove('open');
+  current = null;
+  window.scrollTo(0,0);
+}
+
+function renderStep() {
+  const s = steps[currentStep];
+  const isLast = currentStep === steps.length - 1;
+  document.getElementById('step-content').innerHTML = `
+    <p class="step-label">${s.label}</p>
+    <p class="step-body">${current[s.key]}</p>
+  `;
+  steps.forEach((_,i) => {
+    const el = document.getElementById('nav-'+i);
+    if(el) el.classList.toggle('active', i===currentStep);
+  });
+  document.getElementById('progress-label').textContent = `${currentStep+1} of ${steps.length}`;
+  const prev = document.getElementById('prev-btn');
+  const next = document.getElementById('next-btn');
+  prev.disabled = currentStep === 0;
+  if(isLast) {
+    next.textContent = 'Back to library';
+    next.onclick = closeScenario;
+  } else {
+    next.innerHTML = 'Next &rarr;';
+    next.onclick = nextStep;
+  }
+}
+
+function goStep(i) { currentStep = i; renderStep(); }
+function nextStep() { if(currentStep < steps.length-1) { currentStep++; renderStep(); } }
+function prevStep() { if(currentStep > 0) { currentStep--; renderStep(); } }
+
+renderCards();
+</script>
+</body>
+</html>

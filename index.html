@@ -67,6 +67,7 @@
   .filter-btn.active-cmd { background: #FAE8EA; color: var(--lpa-red); border-color: var(--lpa-red); font-weight: 600; }
   .filter-btn.active-arc { background: #F5F0EC; color: #7a4a2a; border-color: #c47a3a; font-weight: 600; }
   .filter-btn.active-pri { background: #FAE8EA; color: var(--lpa-red-dark); border-color: var(--lpa-red-dark); font-weight: 600; }
+  .filter-btn.active-multi { background: #F0EBF5; color: #5a2d7a; border-color: #8a5aaa; font-weight: 600; }
 
   /* Card grid */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
@@ -157,6 +158,9 @@
   .arch-btn-pri { border-color: #e8a0a8; }
   .arch-btn-pri:hover  { background: #F9E8E9; border-color: var(--lpa-red-dark); }
   .arch-btn-pri .arch-btn-name { color: var(--lpa-red-dark); }
+  .arch-btn-multi { border-color: #c9aee0; }
+  .arch-btn-multi:hover { background: #F0EBF5; border-color: #8a5aaa; }
+  .arch-btn-multi .arch-btn-name { color: #5a2d7a; }
 
   .quiz-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .quiz-situation { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid var(--border); }
@@ -266,6 +270,7 @@
         <button class="filter-btn" data-filter="Command" onclick="filter(this,'Command')">Command</button>
         <button class="filter-btn" data-filter="Architect" onclick="filter(this,'Architect')">Architect</button>
         <button class="filter-btn" data-filter="Pride" onclick="filter(this,'Pride')">Pride</button>
+        <button class="filter-btn" data-filter="multi" onclick="filter(this,'multi')">Multi-archetype</button>
       </div>
       <div class="grid" id="card-grid"></div>
     </div>
@@ -321,6 +326,10 @@
         <button class="arch-btn arch-btn-pri" onclick="loadQuizByArchetype('Pride')">
           <span class="arch-btn-name">Pride</span>
           <span class="arch-btn-count" id="arch-cnt-pri"></span>
+        </button>
+        <button class="arch-btn arch-btn-multi" onclick="loadQuizByArchetype('multi')">
+          <span class="arch-btn-name">Multi-archetype</span>
+          <span class="arch-btn-count" id="arch-cnt-multi"></span>
         </button>
       </div>
     </div>
@@ -715,7 +724,10 @@ function switchTab(t) {
 
 /* ── Library ── */
 function renderCards() {
-  const filtered = activeFilter==='all' ? scenarios : scenarios.filter(s=>s.archetypes.includes(activeFilter));
+  let filtered;
+  if (activeFilter === 'all') filtered = scenarios;
+  else if (activeFilter === 'multi') filtered = scenarios.filter(s=>s.archetypes.length > 1);
+  else filtered = scenarios.filter(s=>s.archetypes.includes(activeFilter));
   document.getElementById('cnt').textContent = `(${scenarios.length})`;
   document.getElementById('card-grid').innerHTML = filtered.map(s=>`
     <div class="card" onclick="openScenario(${s.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openScenario(${s.id})">
@@ -734,7 +746,7 @@ function renderCards() {
 function filter(btn, type) {
   activeFilter = type;
   document.querySelectorAll('.filter-btn').forEach(b => b.className='filter-btn');
-  const m = {all:'active-all',Vision:'active-vis',Command:'active-cmd',Architect:'active-arc',Pride:'active-pri'};
+  const m = {all:'active-all',Vision:'active-vis',Command:'active-cmd',Architect:'active-arc',Pride:'active-pri',multi:'active-multi'};
   btn.classList.add(m[type]);
   renderCards();
 }
@@ -792,6 +804,8 @@ let quizArchetype = 'all';
     const n = scenarios.filter(s=>s.archetypes.includes(a)).length;
     document.getElementById(idMap[a]).textContent = n + ' question' + (n!==1?'s':'');
   });
+  const nMulti = scenarios.filter(s=>s.archetypes.length > 1).length;
+  document.getElementById('arch-cnt-multi').textContent = nMulti + ' question' + (nMulti!==1?'s':'');
 })();
 
 function shuffle(arr) {
@@ -802,7 +816,10 @@ function shuffle(arr) {
 
 function loadQuizByArchetype(archetype) {
   quizArchetype = archetype;
-  const pool = archetype==='all' ? scenarios : scenarios.filter(s=>s.archetypes.includes(archetype));
+  let pool;
+  if (archetype === 'all') pool = scenarios;
+  else if (archetype === 'multi') pool = scenarios.filter(s=>s.archetypes.length > 1);
+  else pool = scenarios.filter(s=>s.archetypes.includes(archetype));
   quizPool = shuffle(pool);
   quizPoolIdx = 0;
   quizAnswers = [];
